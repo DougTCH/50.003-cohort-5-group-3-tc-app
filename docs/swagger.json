@@ -1,35 +1,24 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Todo Apis",
-    "description": "API for Managing todo calls",
+    "title": "TransferConnect API",
+    "description": "API for managing process points accrual",
     "contact": {
       "name": "API Support",
-      "email": "tiwariankit496@gmail.com"
+      "email": "N/A"
     }
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "tags": [
+  "servers": [
     {
-      "name": "TODO CRUD",
-      "description": "TODO related apis"
-    },
-    {
-      "name": "Todo",
-      "description": "Todo App"
+      "url": "http://localhost:3000/"
     }
   ],
-  "schemes": [
-    "http"
-  ],
-  "securityDefinitions": {},
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
+  "tags": [
+    {
+      "name": "Transfer Connect API",
+      "description": "Web API"
+    }
   ],
   "paths": {
     "/": {
@@ -42,104 +31,121 @@
         }
       }
     },
-    "/sample": {
+    "/transact/obtain_records/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/transact/sample2": {
       "get": {
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/sample2": {
-      "get": {
+    "/auth/login": {
+      "post": {
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
   },
-  "definitions": {
-    "todoResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 200
-        },
-        "message": {
-          "type": "string",
-          "example": "Success"
-        }
-      }
-    },
-    "errorResponse.400": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 400
-        },
-        "message": {
-          "type": "string",
-          "example": "The request was malformed or invalid. Please check the request parameters."
-        }
-      }
-    },
-    "errorResponse.401": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 401
-        },
-        "message": {
-          "type": "string",
-          "example": "Authentication failed or user lacks proper authorization."
-        }
-      }
-    },
-    "errorResponse.403": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 403
-        },
-        "message": {
-          "type": "string",
-          "example": "You do not have permission to access this resource."
-        }
-      }
-    },
-    "errorResponse.404": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string",
-          "example": "404"
-        },
-        "message": {
-          "type": "string",
-          "example": "The requested resource could not be found on the server."
-        }
-      }
-    },
-    "errorResponse.500": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 500
-        },
-        "message": {
-          "type": "string",
-          "example": "An unexpected error occurred on the server. Please try again later."
-        }
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

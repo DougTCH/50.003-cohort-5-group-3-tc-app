@@ -1,12 +1,12 @@
 const options = {
-  openapi: "OpenAPI 3",
+  openapi: "3.0.0",
   language: "en-US",
   disableLogs: false,
   autoHeaders: false,
-  autoQuery: false,
-  autoBody: false,
+  autoQuery: true,
+  autoBody: true,
 };
-const generateSwagger = require("swagger-autogen")();
+const generateSwagger = require("swagger-autogen")(options);
 
 const swaggerDocument = {
   info: {
@@ -29,38 +29,15 @@ const swaggerDocument = {
       description: "Web API",
     },
   ],
-  securityDefinitions: {
-
-  },
-  definitions: {
-    todoResponse: {
-      code: 200,
-      message: "Success",
-    },
-    "errorResponse.400": {
-      code: 400,
-      message:
-      "The request was malformed or invalid. Please check the request parameters.",
-    },
-    "errorResponse.401": {
-      code: 401,
-      message: "Authentication failed or user lacks proper authorization.",
-    },
-    "errorResponse.403": {
-      code: 403,
-      message: "You do not have permission to access this resource.",
-    },
-    "errorResponse.404": {
-      code: "404",
-      message: "The requested resource could not be found on the server.",
-    },
-    "errorResponse.500": {
-      code: 500,
-      message:
-      "An unexpected error occurred on the server. Please try again later.",
-    },
+  components: {
+    securitySchemes:{
+        bearerAuth: {
+            type: 'http',
+            scheme: 'bearer'
+        }
+    }
   },
 };
 const swaggerFile= "./docs/swagger.json";
-const apiRouteFile= ["./app.js","./routes/sample.js"];
+const apiRouteFile= ["./app.js"];
 generateSwagger(swaggerFile, apiRouteFile, swaggerDocument);
