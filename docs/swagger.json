@@ -14,29 +14,23 @@
       "url": "http://localhost:3000/"
     }
   ],
-  "tags": [
-    {
-      "name": "Transfer Connect API",
-      "description": "Web API"
-    }
-  ],
   "paths": {
     "/": {
       "get": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/transact/obtain_records/{id}": {
+    "/transact/obtain_records/pending/{last}": {
       "get": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "last",
             "in": "path",
             "required": true,
             "schema": {
@@ -59,9 +53,19 @@
         ]
       }
     },
-    "/transact/sample2": {
+    "/transact/obtain_records/complete/{last}": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "last",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -131,6 +135,9 @@
                     "example": "any"
                   },
                   "password": {
+                    "example": "any"
+                  },
+                  "app_code": {
                     "example": "any"
                   }
                 }

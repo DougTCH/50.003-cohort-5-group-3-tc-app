@@ -2,7 +2,7 @@ const options = {
   openapi: "3.0.0",
   language: "en-US",
   disableLogs: false,
-  autoHeaders: false,
+  autoHeaders: true,
   autoQuery: true,
   autoBody: true,
 };
@@ -23,12 +23,12 @@ const swaggerDocument = {
   schemes: ["http"],
   consumes: ["application/json"],
   produces: ["application/json"],
-  tags: [
-    {
-      name: "Transfer Connect API",
-      description: "Web API",
-    },
-  ],
+  // tags: [
+  //   {
+  //     name: "Transfer Connect API",
+  //     description: "Web API",
+  //   },
+  // ],
   components: {
     securitySchemes:{
         bearerAuth: {

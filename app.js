@@ -6,11 +6,12 @@ const port = 3000;
 
 const swaggerUIPath= require("swagger-ui-express");
 const swaggerjsonFilePath = require("./docs/swagger.json");
+app.use(express.json())
 app.use("/api-docs", swaggerUIPath.serve, swaggerUIPath.setup(swaggerjsonFilePath));
 app.use("/transact",require("./routes/transact"))
 app.use("/auth",require("./routes/auth"))
 app.get('/', (req, res) => {
-  res.send('Hello, Swagger!');
+  res.statusCode(401);
 });
 
 app.listen(port, () => {
