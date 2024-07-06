@@ -1,6 +1,6 @@
 
 const express = require('express');
-const verifyToken = require('../middleware/authMiddleware');
+const {verifyToken,signToken} = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.get('/obtain_records/pending/:last', verifyToken, (req, res) => {

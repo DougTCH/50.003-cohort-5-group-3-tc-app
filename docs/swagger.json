@@ -19,8 +19,8 @@
       "get": {
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -99,6 +99,9 @@
                 "type": "object",
                 "properties": {
                   "username": {
+                    "example": "any"
+                  },
+                  "app_code": {
                     "example": "any"
                   },
                   "password": {
