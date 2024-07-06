@@ -24,4 +24,9 @@ function verifyToken(req, res, next) {
     }
 };
 
-module.exports = verifyToken;
+function signToken(user,appcode){
+    return jwt.sign({ userId: user.hashed_id, app:appcode }, 'your-secret-key', {
+        expiresIn: '1h',
+    });
+}
+module.exports = {verifyToken:verifyToken,signToken:signToken};
