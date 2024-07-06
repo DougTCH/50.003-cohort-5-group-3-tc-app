@@ -16,12 +16,28 @@ function verifyToken(req, res, next) {
     if (!token) return res.status(401).json({ error: 'Access denied' });
     try {
         const decoded = jwt.verify(token, 'your-secret-key');
-        req.userId = decoded.userId;
-        next();
+        next(decoded);
     } 
     catch (error) {
         res.status(401).json({ error: 'Invalid token' });
     }
+};
+function verifyB2BToken(req, res, next) {
+    /*
+   #swagger.autoHeaders = false 
+   #swagger.security = [{
+           "bearerAuth": []
+   }] */
+   verifyToken(req,res,(decoded)=>{
+        if(!decoded['role']) throw "Invalid token";
+        if(decoded['role']=='b2b'){ 
+            next(decoded);
+            return;
+        } 
+        else{
+            throw "Invalid token";
+        }
+    });
 };
 
 function signToken(user,appcode){
@@ -29,4 +45,12 @@ function signToken(user,appcode){
         expiresIn: '1h',
     });
 }
-module.exports = {verifyToken:verifyToken,signToken:signToken};
+
+function signB2BToken(user,appcode){
+    return jwt.sign({ userId: user.hashed_id, app:appcode ,role:'b2b'}, 'your-secret-key', {
+        expiresIn: '2h',
+    });
+}
+
+const AuthMiddleware = {verifyToken:verifyToken,verifyB2BToken:verifyB2BToken,signToken:signToken,signB2BToken:signB2BToken};
+module.exports = AuthMiddleware;

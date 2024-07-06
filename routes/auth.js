@@ -42,4 +42,23 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/b2b/getauth',async(req,res)=>{
+    try {   
+        const { username, password, app_code } = req.body;
+        //const user = {username:username, password:"123456"}
+        if (!username || !password) {
+            return res.status(401).json({ error: 'Authentication failed' });
+        }
+        const b2bLogin = require('./models/user.js')['B2BLogin'];
+        b2bLogin(username,app_code,password,db,(token)=>{
+            res.status(200).json({ token });
+        },(err)=>{
+            res.status(500).json({ error: 'Login failed' });    
+        });
+    } 
+    catch (error) {
+        res.status(500).json({ error: 'Login failed' });
+    }
+});
+
 module.exports = router;

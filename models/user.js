@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const {verifyToken,signToken} = require('../middleware/authMiddleware.js');
+const AuthMiddleware = require('../middleware/authMiddleware.js');
 var crypto = require('crypto')
 
 class User{
@@ -39,7 +39,7 @@ class User{
     }
 }
 
-async function  createUser(username,appcode,password,db,success,failed){
+async function createUser(username,appcode,password,db,success,failed){
 
     if(!db) return failed('NO DB');
 
@@ -90,4 +90,25 @@ async function login(username,appcode,password,db,success,failed){
             return failed("Login Attempt failed");
         });  
 }
-module.exports = {User:User,createUser:createUser,loginUser:login};
+async function b2blogin(username,appcode,password,db,success,failed){
+    var u = new User(username,appcode);
+    db.get(
+        //#swagger.ignore = true
+        `SELECT hashed_id uid, hashed_pw pwdhash FROM loyaltyprograms
+        WHERE hashed_id = '${u.hashedid}'`,
+        async (err,row)=>{
+            if(err){
+                console.log(`Internal Server Error login: ${err}`);
+                return failed("Failed to login");
+            }
+            if(row){
+                //var auth_obj = u.getDBObj(await bcrypt.hash(password,10));
+                if(await bcrypt.compare(password,row.pwdhash)){
+                    return success(AuthMiddleware.signB2BToken(username,appcode));
+                }
+            }
+            return failed("Login Attempt failed");
+        });  
+}
+
+module.exports = {User:User,createUser:createUser,loginUser:login,B2BLogin:b2blogin};
