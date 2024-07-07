@@ -1,6 +1,7 @@
 
 const db = require('../services/db_adaptor.js');
-
+const user = require('./user.js');
+const tblname = 'loyalty_programs';
 class LoyaltyProgramInfo{
     // constructor(id,name,cur_name,p_time,des,enrol_l,tc_l){
     //     this.pid = id;
@@ -21,7 +22,7 @@ class LoyaltyProgramInfo{
         this.tc_l = sqlrow.terms_c_link;
     }
     static createTable(){
-        return `CREATE TABLE IF NOT EXISTS loyalty_programs (
+        return `CREATE TABLE IF NOT EXISTS ${tblname} (
             pid TEXT NOT NULL PRIMARY KEY,
             userid TEXT NOT NULL,
             name TEXT NOT NULL,
@@ -36,11 +37,21 @@ class LoyaltyProgramInfo{
                     ON DELETE CASCADE
         );`;
     }
-    updateSQL(dto){
+    updateSQL(){
         //TODO dynamically create the sql 
-        for(const prop in dto){
-
-        }
+        return `UPDATE ${tblname}
+            SET name = ${this.name},
+                currency = ${this.cur_name},
+                process_time = ${this.p_time},
+                description = ${this.des},
+                enrol_link = ${this.enrol_l},
+                terms_c_link = ${this.tc_l}
+            WHERE 
+                pid = ${this.pid};`
+    }
+    insertSQL(userid){
+        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link)
+        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}');`
     }
 }
 
@@ -57,9 +68,13 @@ async function update_loyalty_program(dto,success,fail){
                 return fail(err);
             }
             db.serialize(()=>{
-                new LoyaltyProgramInfo(row).updateSQL(dto);
+                db.run(new LoyaltyProgramInfo(dto).updateSQL(),(err)=>{
+                    if(err){
+                        return fail(err);
+                    }
+                    return success(`updated: ${dto['pid']}`);
+                });
             });
-
         }); 
     }   
     catch(err){
