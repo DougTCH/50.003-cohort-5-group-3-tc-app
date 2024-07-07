@@ -16,9 +16,10 @@ function verifyToken(req, res, next) {
     if (!token) return res.status(401).json({ error: 'Access denied' });
     try {
         const decoded = jwt.verify(token, 'your-secret-key');
-        next(decoded);
+        return next();
     } 
     catch (error) {
+        console.log(error);
         res.status(401).json({ error: 'Invalid token' });
     }
 };
@@ -31,7 +32,7 @@ function verifyB2BToken(req, res, next) {
    verifyToken(req,res,(decoded)=>{
         if(!decoded['role']) throw "Invalid token";
         if(decoded['role']=='b2b'){ 
-            next(decoded);
+            next();
             return;
         } 
         else{

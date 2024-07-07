@@ -84,7 +84,7 @@ async function login(username,appcode,password,db,success,failed){
             if(row){
                 //var auth_obj = u.getDBObj(await bcrypt.hash(password,10));
                 if(await bcrypt.compare(password,row.pwdhash)){
-                    return success(signToken(username,appcode));
+                    return success(AuthMiddleware.signToken(username,appcode));
                 }
             }
             return failed("Login Attempt failed");
