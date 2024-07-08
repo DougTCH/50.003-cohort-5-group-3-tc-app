@@ -1,11 +1,16 @@
 // app.js
 const express = require('express');
-const { specs, swaggerUi } = require('./swagger');
+//const { specs, swaggerUi } = require('./swagger');
 const app = express();
 const port = 3000;
 const schema = require('./models/schema.js');
 const swaggerUIPath= require("swagger-ui-express");
 const swaggerjsonFilePath = require("./docs/swagger.json");
+//const TransferConnectCrypt = require('./services/cryptography.js');
+//const prompt = require("prompt-sync")({ sigint: true });
+//const fs = require('node:fs');
+const SFTPService = require('./services/sftp_client.js');
+const db = require('./services/db_adaptor.js');
 
 schema();
 
@@ -21,3 +26,14 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+async function closeconnections(){
+  await SFTPService.onSIGINT();
+  db.run(()=>{
+  db.close((err)=>{
+    if(err)console.error(err);
+    else console.log('DB CLOSED');
+  });});
+}
+process.on('SIGINT',closeconnections);
+process.on('SIGTERM',closeconnections);
