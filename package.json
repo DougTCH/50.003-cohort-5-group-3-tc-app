@@ -14,7 +14,9 @@
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "prompt-sync": "^4.2.0",
     "sqlite3": "^5.1.7",
+    "ssh2-sftp-client": "^10.0.3",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
