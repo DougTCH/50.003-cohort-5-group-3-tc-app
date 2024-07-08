@@ -19,21 +19,28 @@ const fs = require('node:fs');
 let Client = require('ssh2-sftp-client');
 
 class SFTPClient {
-  constructor() {
+  constructor(params) {
     this.client = new Client();
+    this.params = params;
+    this.connected = false;
   }
 
   async connect(options) {
     console.log(`Connecting to ${options.host}:${options.port}`);
     try {
       await this.client.connect(options);
+      this.connected = true;
     } catch (err) {
       console.log('Failed to connect:', err);
     }
   }
 
   async disconnect() {
+    if(!this.connected){
+        console.error('SFTP already disconnected');
+    }
     await this.client.end();
+    this.connected = false;
   }
 
   async listFiles(remoteDir, fileGlob) {
@@ -61,7 +68,7 @@ class SFTPClient {
   }
 
   async uploadFile(localFile, remoteFile) {
-    console.log(`Uploading ${localFile} to ${remoteFile} ...`);
+    //console.log(`Uploading ${localFile} to ${remoteFile} ...`);
     try {
       await this.client.put(localFile, remoteFile);
     } catch (err) {
@@ -87,21 +94,22 @@ class SFTPClient {
     }
   }
 }
-var client;
-(async ()=>{
+
 var fn = prompt('Filename: ');
-var pw = prompt('Password?: ');
+var pw = prompt.hide('Password?: ');
 
 var cipher = fs.readFileSync(fn,'utf-8');
 var privatekey = TransferConnectCrypt.decrypt(pw,cipher);
-
+//console.log(privatekey);
 pw = null;
 fn = null;
 
-const port = 22;
-const parsed = { host:'kaligo.files.com', username:'c5g3',privatekey:privatekey,port:22};
-client = new SFTPClient ();
-await client.connect(parsed);
-})();
+const parsed = { host:'kaligo.files.com', username:'c5g3',privateKey:privatekey,port:22};
+const client = new SFTPClient(parsed);
+// await client.connect(parsed);
+// await client.listFiles("/sutd_project_2024/c5g3/Accrual");
+// await client.listFiles("/sutd_project_2024/c5g3/Handback");
+// await client.disconnect();
 
-module.exports = SFTPService = {Client: client};
+
+module.exports = SFTPService = {Client: client,onSIGINT:async ()=>{await client.disconnect();}};
