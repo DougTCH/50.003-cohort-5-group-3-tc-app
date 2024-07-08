@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/obtain_records/pending/:last', AuthMiddleware.verifyToken, (req, res) => {
   //Do something with the DB to obtain
-  res.json({ message: 'This is a sample message' });
+  res.json({ message: 'This is a sample message', decoded:req.body.token });
 });
 
 router.get('/obtain_records/complete/:last',AuthMiddleware.verifyToken,(req, res) => {
