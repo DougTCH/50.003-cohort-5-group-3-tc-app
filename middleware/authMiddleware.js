@@ -1,4 +1,8 @@
 const jwt = require('jsonwebtoken');
+const fs = require('node:fs');
+const prompt = require("prompt-sync")({ sigint: true });
+
+var pw = prompt.hide('JWT Key?: ');
 
 function verifyToken(req, res, next) {
      /*
@@ -15,12 +19,12 @@ function verifyToken(req, res, next) {
 
     if (!token) return res.status(401).json({ error: 'Access denied' });
     try {
-        const decoded = jwt.verify(token, 'your-secret-key');
+        const decoded = jwt.verify(token, pw);
         req.body.token = decoded;
-        return next();
+        return next(decoded);
     } 
     catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(401).json({ error: 'Invalid token' });
     }
 };
@@ -32,8 +36,8 @@ function verifyB2BToken(req, res, next) {
            "bearerAuth": []
    }] */
    verifyToken(req,res,(decoded)=>{
-        if(!decoded['role']) throw "Invalid token";
-        if(decoded['role']=='b2b'){ 
+        if(!decoded['role']||!decoded['app']) throw "Invalid token";
+        if(decoded['role']=='b2b' && decoded['app']==req.body.app){ 
             next();
             return;
         } 
@@ -44,13 +48,13 @@ function verifyB2BToken(req, res, next) {
 };
 
 function signToken(user,appcode){
-    return jwt.sign({ userId: user.hashed_id, app:appcode }, 'your-secret-key', {
+    return jwt.sign({ username: user, app:appcode, role:'user' }, pw, {
         expiresIn: '1h',
     });
 }
 
 function signB2BToken(user,appcode){
-    return jwt.sign({ userId: user.hashed_id, app:appcode ,role:'b2b'}, 'your-secret-key', {
+    return jwt.sign({ username: user, app:appcode ,role:'b2b'}, pw, {
         expiresIn: '2h',
     });
 }
