@@ -211,6 +211,9 @@
                   },
                   "additional_info": {
                     "example": "any"
+                  },
+                  "req": {
+                    "example": "any"
                   }
                 }
               }
@@ -247,7 +250,21 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "req": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/auth/register": {
@@ -370,7 +387,48 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": {
+                    "example": "any"
+                  },
+                  "userid": {
+                    "example": "any"
+                  },
+                  "name": {
+                    "example": "any"
+                  },
+                  "currency": {
+                    "example": "any"
+                  },
+                  "process_time": {
+                    "example": "any"
+                  },
+                  "description": {
+                    "example": "any"
+                  },
+                  "enrol_link": {
+                    "example": "any"
+                  },
+                  "terms_c_link": {
+                    "example": "any"
+                  },
+                  "decoded": {
+                    "example": "any"
+                  },
+                  "app": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

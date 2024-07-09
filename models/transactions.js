@@ -192,5 +192,6 @@ async function update_transaction_record(dto, success, fail) {
 module.exports = { 
     TransactionRecord, 
     update_transaction_record, 
-    createTable 
+    createTable,
+    tblname
 };
