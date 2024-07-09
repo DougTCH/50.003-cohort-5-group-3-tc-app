@@ -10,23 +10,22 @@ function verifyToken(req, res, next) {
     #swagger.security = [{
             "bearerAuth": []
     }] */
-
-    if(!req.headers['authorization']){
-        res.status(401).json({error: 'Invalid Headers'});
-        throw "Invalid header";
-    }
-    const token = req.headers['authorization'].split(' ')[1];
-
-    if (!token) return res.status(401).json({ error: 'Access denied' });
     try {
-        const decoded = jwt.verify(token, pw);
-        req.body.token = decoded;
-        return next(decoded);
-    } 
-    catch (error) {
-        //console.log(error);
-        res.status(401).json({ error: 'Invalid token' });
-    }
+        if(!req.headers['authorization']){
+            res.status(401).json({error: 'Invalid Headers'});
+            throw "Invalid header";
+        }
+        const token = req.headers['authorization'].split(' ')[1];
+
+        if (!token) return res.status(401).json({ error: 'Access denied' });
+            const decoded = jwt.verify(token, pw);
+            req.body.token = decoded;
+            return next();
+        } 
+        catch (error) {
+            //console.log(error);
+            res.status(401).json({ error: 'Invalid token' });
+        }
 };
 
 function verifyB2BToken(req, res, next) {
