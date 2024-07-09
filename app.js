@@ -16,6 +16,7 @@ app.use("/api-docs", swaggerUIPath.serve, swaggerUIPath.setup(swaggerjsonFilePat
 app.use("/transact",require("./routes/transact"));
 app.use("/auth",require("./routes/auth"));
 app.use("/b2b",require("./routes/b2b"));
+app.use("/info",require("./routes/info"));
 app.get('/', (req, res) => {
   res.status(401).send("API");
 });

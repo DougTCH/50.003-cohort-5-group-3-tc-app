@@ -1,17 +1,7 @@
 
 const db = require('../services/db_adaptor.js');
-const user = require('./user.js');
 const tblname = 'loyalty_programs';
 class LoyaltyProgramInfo{
-    // constructor(id,name,cur_name,p_time,des,enrol_l,tc_l){
-    //     this.pid = id;
-    //     this.name = name;
-    //     this.cur_name = cur_name;
-    //     this.p_time = p_time;
-    //     this.des  = des;
-    //     this.enrol_l = enrol_l;
-    //     this.tc_l = tc_l;
-    // }
     constructor(sqlrow){
         this.pid = sqlrow.pid;
         this.name = sqlrow.name;
@@ -82,5 +72,12 @@ async function update_loyalty_program(dto,success,fail){
     }
 }
 
-const LoyaltyPrograms = {InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable};
+async function get_loyalty_program(pidlist,callback){
+    db.all(`SELECT * FROM ${tblname} 
+        WHERE pid IN (${pidlist.map((v)=>{return `"${v}"`})})`,(err,rows)=>{
+        callback(err,rows);
+    });
+}
+
+const LoyaltyPrograms = {InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable,get_loyalty_program:get_loyalty_program};
 module.exports = LoyaltyPrograms;
