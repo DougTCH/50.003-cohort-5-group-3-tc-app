@@ -49,14 +49,17 @@ router.post('/b2b/getauth',async(req,res)=>{
         if (!username || !password) {
             return res.status(401).json({ error: 'Authentication failed' });
         }
-        const b2bLogin = require('./models/user.js')['B2BLogin'];
-        b2bLogin(username,app_code,password,db,(token)=>{
+        const {B2BLogin} = require('../models/user.js');
+        B2BLogin(username,app_code,password,db,(token)=>{
+            console.log('success');
             res.status(200).json({ token });
         },(err)=>{
-            res.status(500).json({ error: 'Login failed' });    
+            console.warn(`B2B Login Failed: ${app_code}`);
+            res.status(501).json({ error: 'Login failed' });    
         });
     } 
     catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Login failed' });
     }
 });

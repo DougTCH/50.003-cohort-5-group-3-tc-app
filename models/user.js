@@ -90,11 +90,12 @@ async function login(username,appcode,password,db,success,failed){
             return failed("Login Attempt failed");
         });  
 }
+
 async function b2blogin(username,appcode,password,db,success,failed){
     var u = new User(username,appcode);
     db.get(
         //#swagger.ignore = true
-        `SELECT hashed_id uid, hashed_pw pwdhash FROM loyaltyprograms
+        `SELECT * FROM users
         WHERE hashed_id = '${u.hashedid}'`,
         async (err,row)=>{
             if(err){
@@ -102,12 +103,17 @@ async function b2blogin(username,appcode,password,db,success,failed){
                 return failed("Failed to login");
             }
             if(row){
-                //var auth_obj = u.getDBObj(await bcrypt.hash(password,10));
-                if(await bcrypt.compare(password,row.pwdhash)){
-                    return success(AuthMiddleware.signB2BToken(username,appcode));
-                }
+                db.get(`SELECT * FROM loyalty_programs WHERE userid = '${row.hashed_id}' AND pid = '${appcode}';`,async (err,rowin)=>{
+                    if(rowin){
+                        if(await bcrypt.compare(password,row.hashed_pw)){
+                            return success(AuthMiddleware.signB2BToken(username,appcode));
+                        }
+                    }
+                    else{
+                        return failed();
+                    }
+                });
             }
-            return failed("Login Attempt failed");
         });  
 }
 
