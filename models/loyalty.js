@@ -75,9 +75,10 @@ async function update_loyalty_program(dto,success,fail){
 async function get_loyalty_program(pidlist,callback){
     db.all(`SELECT * FROM ${tblname} 
         WHERE pid IN (${pidlist.map((v)=>{return `"${v}"`})})`,(err,rows)=>{
+            rows.map((v)=>{v.userid = 0; return v})
         callback(err,rows);
     });
 }
 
-const LoyaltyPrograms = {InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable,get_loyalty_program:get_loyalty_program};
+const LoyaltyPrograms = {tblname:tblname,InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable,get_loyalty_program:get_loyalty_program};
 module.exports = LoyaltyPrograms;

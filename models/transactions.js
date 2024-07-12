@@ -17,6 +17,7 @@ class TransactionRecord {
         this.additional_info = sqlrow.additional_info;
     }
 
+
     static createTable() {
         return `CREATE TABLE IF NOT EXISTS ${tblname} (
             t_id TEXT PRIMARY KEY,
@@ -60,7 +61,10 @@ class TransactionRecord {
         return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, reference_number, amount, status, additional_info)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
-
+    getAccrualRow(idx){
+        var name = this.member_name.split(" ");//need decrypt/encrypt
+        return [idx,this.member_id,name[0],name[1],this.transaction_date,this.amount,this.reference_number,this.app_id];
+    }
     static getPendingRecords(last, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE transaction_date > ? AND status = 'pending' ORDER BY transaction_date ASC`;
         db.all(sql, [last], (err, rows) => {
@@ -115,7 +119,7 @@ class TransactionRecord {
             status: 'pending' // Default status to 'pending'
         });
         const sql = transaction.insertSQL();
-        console.log('Executing SQL:', sql);
+        //console.log('Executing SQL:', sql);
         db.run(sql, [
             transaction.t_id,
             transaction.app_id,

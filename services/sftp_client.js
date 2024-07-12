@@ -94,6 +94,7 @@ class SFTPClient {
     }
   }
 }
+var cipher,privatekey,fn,pw;
 
 var fn = prompt('Filename: ');
 var pw = prompt.hide('Password?: ');

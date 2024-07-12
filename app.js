@@ -6,7 +6,7 @@ const port = 3000;
 const schema = require('./models/schema.js');
 const swaggerUIPath= require("swagger-ui-express");
 const swaggerjsonFilePath = require("./docs/swagger.json");
-//const SFTPService = require('./services/sftp_client.js');
+const SFTPService = require('./services/sftp_client.js');
 const db = require('./services/db_adaptor.js');
 
 schema();
