@@ -60,10 +60,10 @@ async function createUser(username,appcode,password,db,success,failed){
             db.serialize(()=>{
                 db.run(u.getSQLInsert(db_obj['password']),(err)=>{
                     if(err){
-                        failed(err);
-                        return;
+                        return failed(err);
+                        
                     }
-                    success();
+                    return success();
                 });
             });
         }

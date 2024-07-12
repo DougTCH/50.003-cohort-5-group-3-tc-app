@@ -9,11 +9,11 @@ router.post('/register', async (req, res) => {
     try {
         const { username, app_code, password } = req.body;
         await createUser(username,app_code,password,db,()=>{
-        res.status(201).json({ message: `User registered successfully: ${username}`});
+            return res.status(201).json({ message: `User registered successfully: ${username}`});
         },
         (err)=>{
-                console.log(err);
-                res.status(500).json({ error: err });    
+                //console.log(err);
+                return res.status(500).json({ error: err });    
         });
     }
     catch (error) {
