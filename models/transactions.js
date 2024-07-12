@@ -9,13 +9,15 @@ class TransactionRecord {
         this.loyalty_pid = sqlrow.loyalty_pid;
         this.user_id = sqlrow.user_id;
         this.member_id = sqlrow.member_id;
-        this.member_name = sqlrow.member_name;
+        this.member_first = sqlrow.member_first;
+        this.member_last = sqlrow.member_last;
         this.transaction_date = sqlrow.transaction_date;
         this.reference_number = sqlrow.reference_number;
         this.amount = sqlrow.amount;
         this.status = sqlrow.status || 'pending'; // Default to 'pending'
         this.additional_info = sqlrow.additional_info;
     }
+
 
     static createTable() {
         return `CREATE TABLE IF NOT EXISTS ${tblname} (
@@ -24,7 +26,8 @@ class TransactionRecord {
             loyalty_pid TEXT NOT NULL,
             user_id TEXT NOT NULL,
             member_id TEXT NOT NULL,
-            member_name TEXT NOT NULL,
+            member_first TEXT NOT NULL,
+            member_last TEXT NOT NULL,
             transaction_date TEXT NOT NULL,
             reference_number TEXT NOT NULL UNIQUE,
             amount REAL NOT NULL,
@@ -47,7 +50,8 @@ class TransactionRecord {
                 loyalty_pid = ?,
                 user_id = ?,
                 member_id = ?,
-                member_name = ?,
+                member_first = ?,
+                member_last = ?,
                 transaction_date = ?,
                 amount = ?,
                 status = ?,
@@ -57,10 +61,12 @@ class TransactionRecord {
     }
 
     insertSQL() {
-        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, reference_number, amount, status, additional_info)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, reference_number, amount, status, additional_info)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
-
+    getAccrualRow(idx){
+        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.reference_number,this.app_id];
+    }
     static getPendingRecords(last, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE transaction_date > ? AND status = 'pending' ORDER BY transaction_date ASC`;
         db.all(sql, [last], (err, rows) => {
@@ -115,14 +121,15 @@ class TransactionRecord {
             status: 'pending' // Default status to 'pending'
         });
         const sql = transaction.insertSQL();
-        console.log('Executing SQL:', sql);
+        //console.log('Executing SQL:', sql);
         db.run(sql, [
             transaction.t_id,
             transaction.app_id,
             transaction.loyalty_pid,
             transaction.user_id,
             transaction.member_id,
-            transaction.member_name,
+            transaction.member_first,
+            transaction.member_last,
             transaction.transaction_date,
             transaction.reference_number,
             transaction.amount,
@@ -168,7 +175,8 @@ async function update_transaction_record(dto, success, fail) {
                     dto.loyalty_pid,
                     dto.user_id,
                     dto.member_id,
-                    dto.member_name,
+                    dto.member_first,
+                    dto.member_last,
                     dto.transaction_date,
                     dto.amount,
                     dto.status,
@@ -192,5 +200,6 @@ async function update_transaction_record(dto, success, fail) {
 module.exports = { 
     TransactionRecord, 
     update_transaction_record, 
-    createTable 
+    createTable,
+    tblname
 };

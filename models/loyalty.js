@@ -1,17 +1,7 @@
 
 const db = require('../services/db_adaptor.js');
-const user = require('./user.js');
 const tblname = 'loyalty_programs';
 class LoyaltyProgramInfo{
-    // constructor(id,name,cur_name,p_time,des,enrol_l,tc_l){
-    //     this.pid = id;
-    //     this.name = name;
-    //     this.cur_name = cur_name;
-    //     this.p_time = p_time;
-    //     this.des  = des;
-    //     this.enrol_l = enrol_l;
-    //     this.tc_l = tc_l;
-    // }
     constructor(sqlrow){
         this.pid = sqlrow.pid;
         this.name = sqlrow.name;
@@ -20,6 +10,7 @@ class LoyaltyProgramInfo{
         this.des  = sqlrow.description;
         this.enrol_l = sqlrow.enrol_link;
         this.tc_l = sqlrow.terms_c_link;
+        this.conversion = sqlrow.conversion;
     }
     static createTable(){
         return `CREATE TABLE IF NOT EXISTS ${tblname} (
@@ -31,6 +22,7 @@ class LoyaltyProgramInfo{
             description TEXT NOT NULL,
             enrol_link TEXT NOT NULL,
             terms_c_link TEXT NOT NULL,
+            conversion TEXT NOT NULL,
             FOREIGN KEY (userid)
                 REFERENCES users(hashed_id)
                     ON UPDATE RESTRICT
@@ -45,13 +37,14 @@ class LoyaltyProgramInfo{
                 process_time = ${this.p_time},
                 description = ${this.des},
                 enrol_link = ${this.enrol_l},
-                terms_c_link = ${this.tc_l}
+                terms_c_link = ${this.tc_l},
+                conversion = ${this.conversion}
             WHERE 
                 pid = ${this.pid};`
     }
     insertSQL(userid){
-        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link)
-        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}');`
+        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link,conversion)
+        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}','${this.conversion}');`
     }
 }
 
@@ -82,5 +75,13 @@ async function update_loyalty_program(dto,success,fail){
     }
 }
 
-const LoyaltyPrograms = {InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable};
+async function get_loyalty_program(pidlist,callback){
+    db.all(`SELECT * FROM ${tblname} 
+        WHERE pid IN (${pidlist.map((v)=>{return `"${v}"`})})`,(err,rows)=>{
+            rows.map((v)=>{v.userid = 0; return v})
+        callback(err,rows);
+    });
+}
+
+const LoyaltyPrograms = {tblname:tblname,InfoObject:LoyaltyProgramInfo,update_loyalty_program:update_loyalty_program,createTable:createTable,get_loyalty_program:get_loyalty_program};
 module.exports = LoyaltyPrograms;

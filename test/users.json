@@ -1,0 +1,226 @@
+[
+    {
+      "username": "user1",
+      "password": "pass1",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "John",
+      "member_last": "Doe",
+      "valid_lp": ["BEST_MOVERS", "CITY_GREEN", "FAST_FRUITS"]
+    },
+    {
+      "username": "user2",
+      "password": "pass2",
+      "appcode": "CITY_BANK",
+      "member_first": "Jane",
+      "member_last": "Smith",
+      "valid_lp": ["FRESH_BAG", "GO_CART", "GOLDEN_HOTELS"]
+    },
+    {
+      "username": "user3",
+      "password": "pass3",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Alice",
+      "member_last": "Brown",
+      "valid_lp": ["HIS_AND_HERS", "KINGSMAN_SERVICES", "NATIONAL_BANKING"]
+    },
+    {
+      "username": "user4",
+      "password": "pass4",
+      "appcode": "KINGSMAN_BANK",
+      "member_first": "Bob",
+      "member_last": "Johnson",
+      "valid_lp": ["PASSION_PAY", "PREMIUM_STEAKHOUSE", "ROYAL_AIR"]
+    },
+    {
+      "username": "user5",
+      "password": "pass5",
+      "appcode": "GLOBAL_TRUST",
+      "member_first": "Charlie",
+      "member_last": "Lee",
+      "valid_lp": ["TAKO_RAMEN", "OUTDOOR_BROS", "SUSHI_CHOPSTICKS"]
+    },
+    {
+      "username": "user6",
+      "password": "pass6",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "David",
+      "member_last": "Williams",
+      "valid_lp": ["PALM_CRUISE", "GENTLEMEN_GOLF", "THE_NATURE_TREE"]
+    },
+    {
+      "username": "user7",
+      "password": "pass7",
+      "appcode": "CITY_BANK",
+      "member_first": "Eve",
+      "member_last": "Martinez",
+      "valid_lp": ["JOYSPRING_TOYS", "PETS_HOUSE", "BEST_MOVERS"]
+    },
+    {
+      "username": "user8",
+      "password": "pass8",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Frank",
+      "member_last": "Garcia",
+      "valid_lp": ["CITY_GREEN", "FAST_FRUITS", "FRESH_BAG"]
+    },
+    {
+      "username": "user9",
+      "password": "pass9",
+      "appcode": "KINGSMAN_BANK",
+      "member_first": "Grace",
+      "member_last": "Anderson",
+      "valid_lp": ["GO_CART", "GOLDEN_HOTELS", "HIS_AND_HERS"]
+    },
+    {
+      "username": "user10",
+      "password": "pass10",
+      "appcode": "GLOBAL_TRUST",
+      "member_first": "Hank",
+      "member_last": "Moore",
+      "valid_lp": ["KINGSMAN_SERVICES", "NATIONAL_BANKING", "PASSION_PAY"]
+    },
+    {
+      "username": "user11",
+      "password": "pass11",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "Ivy",
+      "member_last": "Taylor",
+      "valid_lp": ["PREMIUM_STEAKHOUSE", "ROYAL_AIR", "TAKO_RAMEN"]
+    },
+    {
+      "username": "user12",
+      "password": "pass12",
+      "appcode": "CITY_BANK",
+      "member_first": "Jack",
+      "member_last": "Thomas",
+      "valid_lp": ["OUTDOOR_BROS", "SUSHI_CHOPSTICKS", "PALM_CRUISE"]
+    },
+    {
+      "username": "user13",
+      "password": "pass13",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Kathy",
+      "member_last": "Jackson",
+      "valid_lp": ["GENTLEMEN_GOLF", "THE_NATURE_TREE", "JOYSPRING_TOYS"]
+    },
+    {
+      "username": "user14",
+      "password": "pass14",
+      "appcode": "KINGSMAN_BANK",
+      "member_first": "Leo",
+      "member_last": "White",
+      "valid_lp": ["PETS_HOUSE", "BEST_MOVERS", "CITY_GREEN"]
+    },
+    {
+      "username": "user15",
+      "password": "pass15",
+      "appcode": "GLOBAL_TRUST",
+      "member_first": "Mia",
+      "member_last": "Harris",
+      "valid_lp": ["FAST_FRUITS", "FRESH_BAG", "GO_CART"]
+    },
+    {
+      "username": "user16",
+      "password": "pass16",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "Nate",
+      "member_last": "Lopez",
+      "valid_lp": ["GOLDEN_HOTELS", "HIS_AND_HERS", "KINGSMAN_SERVICES"]
+    },
+    {
+      "username": "user17",
+      "password": "pass17",
+      "appcode": "CITY_BANK",
+      "member_first": "Olivia",
+      "member_last": "Gonzalez",
+      "valid_lp": ["NATIONAL_BANKING", "PASSION_PAY", "PREMIUM_STEAKHOUSE"]
+    },
+    {
+      "username": "user18",
+      "password": "pass18",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Paul",
+      "member_last": "Nelson",
+      "valid_lp": ["ROYAL_AIR", "TAKO_RAMEN", "OUTDOOR_BROS"]
+    },
+    {
+      "username": "user19",
+      "password": "pass19",
+      "appcode": "KINGSMAN_BANK",
+      "member_first": "Quinn",
+      "member_last": "Carter",
+      "valid_lp": ["SUSHI_CHOPSTICKS", "PALM_CRUISE", "GENTLEMEN_GOLF"]
+    },
+    {
+      "username": "user20",
+      "password": "pass20",
+      "appcode": "GLOBAL_TRUST",
+      "member_first": "Rose",
+      "member_last": "Mitchell",
+      "valid_lp": ["THE_NATURE_TREE", "JOYSPRING_TOYS", "PETS_HOUSE"]
+    },
+    {
+      "username": "user21",
+      "password": "pass21",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "Sam",
+      "member_last": "Perez",
+      "valid_lp": ["BEST_MOVERS", "CITY_GREEN", "FAST_FRUITS"]
+    },
+    {
+      "username": "user22",
+      "password": "pass22",
+      "appcode": "CITY_BANK",
+      "member_first": "Tina",
+      "member_last": "Roberts",
+      "valid_lp": ["FRESH_BAG", "GO_CART", "GOLDEN_HOTELS"]
+    },
+    {
+      "username": "user23",
+      "password": "pass23",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Uma",
+      "member_last": "Walker",
+      "valid_lp": ["HIS_AND_HERS", "KINGSMAN_SERVICES", "NATIONAL_BANKING"]
+    },
+    {
+      "username": "user24",
+      "password": "pass24",
+      "appcode": "KINGSMAN_BANK",
+      "member_first": "Vince",
+      "member_last": "Young",
+      "valid_lp": ["PASSION_PAY", "PREMIUM_STEAKHOUSE", "ROYAL_AIR"]
+    },
+    {
+      "username": "user25",
+      "password": "pass25",
+      "appcode": "GLOBAL_TRUST",
+      "member_first": "Wendy",
+      "member_last": "King",
+      "valid_lp": ["TAKO_RAMEN", "OUTDOOR_BROS", "SUSHI_CHOPSTICKS"]
+    },
+    {
+      "username": "user26",
+      "password": "pass26",
+      "appcode": "NATIONAL_BANKING",
+      "member_first": "Xander",
+      "member_last": "Scott",
+      "valid_lp": ["PALM_CRUISE", "GENTLEMEN_GOLF", "THE_NATURE_TREE"]
+    },
+    {
+      "username": "user27",
+      "password": "pass27",
+      "appcode": "CITY_BANK",
+      "member_first": "Yara",
+      "member_last": "Torres",
+      "valid_lp": ["JOYSPRING_TOYS", "PETS_HOUSE", "BEST_MOVERS"]
+    },
+    {
+      "username": "user28",
+      "password": "pass28",
+      "appcode": "ROYAL_FINANCE",
+      "member_first": "Zane",
+      "member_last": "Adams",
+      "valid_lp": ["CITY_GREEN", "FAST_FRUITS", "FRESH_BAG"]
+    }
+]

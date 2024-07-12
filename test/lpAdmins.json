@@ -1,0 +1,102 @@
+[
+    {
+        "username": "admin_best_movers",
+        "password": "e0oXQcM9T5X8",
+        "appcode": "BEST_MOVERS"
+    },
+    {
+        "username": "admin_city_green",
+        "password": "r5aZDpF3V7B1",
+        "appcode": "CITY_GREEN"
+    },
+    {
+        "username": "admin_fast_fruits",
+        "password": "g4rWYsN1U8F6",
+        "appcode": "FAST_FRUITS"
+    },
+    {
+        "username": "admin_fresh_bag",
+        "password": "s6oPtYh2K7N9",
+        "appcode": "FRESH_BAG"
+    },
+    {
+        "username": "admin_go_cart",
+        "password": "t9pJkZq1L8X4",
+        "appcode": "GO_CART"
+    },
+    {
+        "username": "admin_golden_hotels",
+        "password": "m3eRzPa7X9U1",
+        "appcode": "GOLDEN_HOTELS"
+    },
+    {
+        "username": "admin_his_and_hers",
+        "password": "i2oUtWs5F8D3",
+        "appcode": "HIS_AND_HERS"
+    },
+    {
+        "username": "admin_kingsman_services",
+        "password": "q1wEy4tU9I8O",
+        "appcode": "KINGSMAN_SERVICES"
+    },
+    {
+        "username": "admin_national_banking",
+        "password": "v7eRyMx3Z9T1",
+        "appcode": "NATIONAL_BANKING"
+    },
+    {
+        "username": "admin_passion_pay",
+        "password": "h5uJoPt8X2Z4",
+        "appcode": "PASSION_PAY"
+    },
+    {
+        "username": "admin_premium_steakhouse",
+        "password": "p9oYtRs6F1W8",
+        "appcode": "PREMIUM_STEAKHOUSE"
+    },
+    {
+        "username": "admin_royal_air",
+        "password": "k1jHzQw7X8P4",
+        "appcode": "ROYAL_AIR"
+    },
+    {
+        "username": "admin_tako_ramen",
+        "password": "f4gJmZp1L8K7",
+        "appcode": "TAKO_RAMEN"
+    },
+    {
+        "username": "admin_outdoor_bros",
+        "password": "b3sPrYh2K7O9",
+        "appcode": "OUTDOOR_BROS"
+    },
+    {
+        "username": "admin_sushi_chopsticks",
+        "password": "y6tFzXq1L8S4",
+        "appcode": "SUSHI_CHOPSTICKS"
+    },
+    {
+        "username": "admin_palm_cruise",
+        "password": "u9iJwZr3X8L1",
+        "appcode": "PALM_CRUISE"
+    },
+    {
+        "username": "admin_gentlemen_golf",
+        "password": "w1zRyHx7P9O8",
+        "appcode": "GENTLEMEN_GOLF"
+    },
+    {
+        "username": "admin_the_nature_tree",
+        "password": "o5qTzYp2K7N9",
+        "appcode": "THE_NATURE_TREE"
+    },
+    {
+        "username": "admin_joy_spring_toys",
+        "password": "l1oYtWs9F8D3",
+        "appcode": "JOYSPRING_TOYS"
+    },
+    {
+        "username": "admin_pets_house",
+        "password": "z3xCvBn7M9L1",
+        "appcode": "PETS_HOUSE"
+    }
+]

@@ -1,0 +1,27 @@
+[
+    {
+      "pid": "NATIONAL_BANKING",
+      "name": "National Banking",
+      "valid_lp": ["BEST_MOVERS", "FAST_FRUITS", "NATIONAL_BANKING", "JOYSPRING_TOYS", "PETS_HOUSE"]
+    },
+    {
+      "pid": "CITY_BANK",
+      "name": "City Bank",
+      "valid_lp": ["CITY_GREEN", "PREMIUM_STEAKHOUSE", "CITY_BANK", "GENTLEMEN_GOLF", "SUSHI_CHOPSTICKS"]
+    },
+    {
+      "pid": "ROYAL_FINANCE",
+      "name": "Royal Finance",
+      "valid_lp": ["ROYAL_AIR", "GO_CART", "ROYAL_FINANCE", "THE_NATURE_TREE", "PASSION_PAY"]
+    },
+    {
+      "pid": "KINGSMAN_BANK",
+      "name": "Kingsman Bank",
+      "valid_lp": ["KINGSMAN_SERVICES", "NATIONAL_BANKING", "KINGSMAN_BANK", "OUTDOOR_BROS", "PALM_CRUISE"]
+    },
+    {
+      "pid": "GLOBAL_BANK",
+      "name": "Global Bank",
+      "valid_lp": ["GLOBAL_TRUST", "FRESH_BAG", "TAKO_RAMEN", "HIS_AND_HERS", "PETS_HOUSE"]
+    }
+]
