@@ -10,6 +10,7 @@ class LoyaltyProgramInfo{
         this.des  = sqlrow.description;
         this.enrol_l = sqlrow.enrol_link;
         this.tc_l = sqlrow.terms_c_link;
+        this.conversion = sqlrow.conversion;
     }
     static createTable(){
         return `CREATE TABLE IF NOT EXISTS ${tblname} (
@@ -21,6 +22,7 @@ class LoyaltyProgramInfo{
             description TEXT NOT NULL,
             enrol_link TEXT NOT NULL,
             terms_c_link TEXT NOT NULL,
+            conversion TEXT NOT NULL,
             FOREIGN KEY (userid)
                 REFERENCES users(hashed_id)
                     ON UPDATE RESTRICT
@@ -35,13 +37,14 @@ class LoyaltyProgramInfo{
                 process_time = ${this.p_time},
                 description = ${this.des},
                 enrol_link = ${this.enrol_l},
-                terms_c_link = ${this.tc_l}
+                terms_c_link = ${this.tc_l},
+                conversion = ${this.conversion}
             WHERE 
                 pid = ${this.pid};`
     }
     insertSQL(userid){
-        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link)
-        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}');`
+        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link,conversion)
+        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}','${this.conversion}');`
     }
 }
 
