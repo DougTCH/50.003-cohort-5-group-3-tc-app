@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const fs = require('node:fs');
 const prompt = require("prompt-sync")({ sigint: true });
-
-var pw = prompt.hide('JWT Key?: ');
+const params = require("../config_helper.js");
+var pw = params["authentication"].jwt_secret=='prompt'? 
+            prompt.hide('JWT Key?: ')
+            :config.authentication.jwt_secret;
 
 function verifyToken(req, res, next) {
      /*
