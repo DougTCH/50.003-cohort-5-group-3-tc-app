@@ -10,7 +10,7 @@ class TransactionRecord {
         this.user_id = sqlrow.user_id;
         this.member_id = sqlrow.member_id;
         this.member_name = sqlrow.member_name;
-        this.transaction_date = sqlrow.transaction_date;
+        this.transaction_date = sqlrow.transaction_date; // In form of DDMMYYYY eg. 1192021 for 11th september 2021
         this.reference_number = sqlrow.reference_number;
         this.amount = sqlrow.amount;
         this.status = sqlrow.status || 'pending'; // Default to 'pending'
@@ -23,11 +23,11 @@ class TransactionRecord {
             app_id TEXT NOT NULL,
             loyalty_pid TEXT NOT NULL,
             user_id TEXT NOT NULL,
-            member_id TEXT NOT NULL,
+            member_id INTEGER NOT NULL,
             member_name TEXT NOT NULL,
-            transaction_date TEXT NOT NULL,
+            transaction_date TEXT NOT NULL CHECK(transaction_date GLOB '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
             reference_number TEXT NOT NULL UNIQUE,
-            amount REAL NOT NULL,
+            amount INTEGER NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending',
             additional_info TEXT CHECK(length(additional_info) <= 512),
             FOREIGN KEY (loyalty_pid)
@@ -61,36 +61,18 @@ class TransactionRecord {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
 
-    static getPendingRecords(last, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE transaction_date > ? AND status = 'pending' ORDER BY transaction_date ASC`;
-        db.all(sql, [last], (err, rows) => {
+    static getLastStatusRecord(status, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date DESC LIMIT 1`;
+        db.get(sql, [status], (err, row) => {
             if (err) {
-                console.error('Error fetching pending records:', err);
+                console.error(`Error fetching last record with status ${status}:`, err);
                 return callback(err);
             }
-            callback(null, rows.map(row => new TransactionRecord(row)));
-        });
-    }
-
-    static getCompleteRecords(last, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE transaction_date > ? AND status = 'complete' ORDER BY transaction_date ASC`;
-        db.all(sql, [last], (err, rows) => {
-            if (err) {
-                console.error('Error fetching complete records:', err);
-                return callback(err);
+            if (row) {
+                callback(null, new TransactionRecord(row));
+            } else {
+                callback(null, null);
             }
-            callback(null, rows.map(row => new TransactionRecord(row)));
-        });
-    }
-
-    static getRecordsByStatus(status, last, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE transaction_date > ? AND status = ? ORDER BY transaction_date ASC`;
-        db.all(sql, [last, status], (err, rows) => {
-            if (err) {
-                console.error(`Error fetching records with status ${status}:`, err);
-                return callback(err);
-            }
-            callback(null, rows.map(row => new TransactionRecord(row)));
         });
     }
 
@@ -110,12 +92,25 @@ class TransactionRecord {
     }
 
     static addTransaction(transactionData, callback) {
+        if (!/^\d{8}$/.test(transactionData.transaction_date)) {
+            return callback(new Error('Invalid transaction_date format. It should be DDMMYYYY.'));
+        }
+
+        if (isNaN(transactionData.member_id)) {
+            return callback(new Error('Invalid member_id. It should be a number.'));
+        }
+        if (isNaN(transactionData.amount)) {
+            return callback(new Error('Invalid amount. It should be a number.'));
+        }
         const transaction = new TransactionRecord({
             ...transactionData,
+            reference_number: uuidv4(), // Generate a unique reference number
             status: 'pending' // Default status to 'pending'
         });
+
         const sql = transaction.insertSQL();
         console.log('Executing SQL:', sql);
+
         db.run(sql, [
             transaction.t_id,
             transaction.app_id,
@@ -136,10 +131,9 @@ class TransactionRecord {
             callback(null, { message: 'Transaction added', t_id: transaction.t_id });
         });
     }
-
-    static removeTransaction(reference_number, callback) {
-        const sql = `DELETE FROM ${tblname} WHERE reference_number = ?`;
-        db.run(sql, [reference_number], function(err) {
+    static removeTransaction(t_id, callback) {
+        const sql = `DELETE FROM ${tblname} WHERE t_id = ?`;
+        db.run(sql, [t_id], function(err) {
             if (err) {
                 console.error('Error removing transaction:', err);
                 return callback(err);
@@ -147,11 +141,66 @@ class TransactionRecord {
             callback(null, { message: 'Transaction removed', changes: this.changes });
         });
     }
+
+    static updateTransactionStatus(t_id, status, callback) {
+        const sql = `UPDATE ${tblname} SET status = ? WHERE t_id = ?`;
+        db.run(sql, [status, t_id], function(err) {
+            if (err) {
+                console.error('Error updating transaction status:', err);
+                return callback(err);
+            }
+            callback(null, { message: 'Transaction status updated', t_id });
+        });
+    }
+    static getAllRecordByStatus(status, callback) {
+        const sql = `SELECT t_id FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
+        db.all(sql, [status], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching all records with status ${status}:`, err);
+                return callback(err);
+            }
+            callback(null, rows.map(row => row.t_id));
+        });
+    }
+    static getAllRecordsByMemberId(member_id, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE member_id = ? ORDER BY transaction_date ASC`;
+        db.all(sql, [member_id], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching all records by member_id ${member_id}:`, err);
+                return callback(err);
+            }
+            callback(null, rows.map(row => new TransactionRecord(row)));
+        });
+    }
+
+    static batchUpdateTransactionStatus(t_ids, status, callback) {
+        const placeholders = t_ids.map(() => '?').join(',');
+        const sql = `UPDATE ${tblname} SET status = ? WHERE t_id IN (${placeholders})`;
+        db.run(sql, [status, ...t_ids], function(err) {
+            if (err) {
+                console.error('Error updating transactions statuses:', err);
+                return callback(err);
+            }
+            callback(null, { message: 'Transactions statuses updated', changes: this.changes });
+        });
+    }
+    static getRecordsByMemberIdAndStatus(member_id, status, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE member_id = ? AND status = ? ORDER BY transaction_date ASC`;
+        db.all(sql, [member_id, status], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching records by member_id ${member_id} with status ${status}:`, err);
+                return callback(err);
+            }
+            callback(null, rows.map(row => new TransactionRecord(row)));
+        });
+    }
 }
+
 
 function createTable() {
     return TransactionRecord.createTable();
 }
+
 
 async function update_transaction_record(dto, success, fail) {
     try {
