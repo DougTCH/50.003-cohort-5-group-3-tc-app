@@ -8,7 +8,7 @@ const swaggerjsonFilePath = require("./docs/swagger.json");
 const SFTPService = require('./services/sftp_client.js');
 const db = require('./services/db_adaptor.js');
 const schedule = require('node-schedule');
-const params = require("./config_helper.js");
+const params = require("./config_helper.js").get_app_config();
 const port =  params["network"].port||3000;
 const submit_accrual_job = require('./jobs/submitaccrual.js');
 
@@ -41,18 +41,19 @@ app.get('/', (req, res) => {
 });
 
 const server = app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  //console.log(`Server is running on http://localhost:${port}`);
 });
 
 async function closeconnections(){
   schedule.gracefulShutdown();
   await SFTPService.onSIGINT();
-  db.run(()=>{
   db.close((err)=>{
     if(err)console.error(err);
-    else console.log('DB CLOSED');
-  });});
+    //else console.log('DB CLOSED');
+  });
+  server.close();
 }
+
 
 process.on('SIGINT',closeconnections);
 process.on('SIGTERM',closeconnections);
