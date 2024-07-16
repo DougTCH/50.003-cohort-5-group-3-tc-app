@@ -5,7 +5,7 @@ const {TransactionRecord,tblname} = require('../models/transactions.js');
 const {stringify} =require('csv-stringify');
 const SFTPService = require('../services/sftp_client.js');
 const fs = require('fs');
-const params = require('../config_helper.js');
+const params = require('../config_helper.js').get_app_config();
 
 async function submit_accrual_job(){
      db.all(`SELECT * FROM ${LoyaltyPrograms.tblname}`,(err,rows)=>{

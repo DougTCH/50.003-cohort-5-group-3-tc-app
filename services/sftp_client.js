@@ -3,7 +3,7 @@ const TransferConnectCrypt = require('./cryptography.js');
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('node:fs');
 //import { config } from 'node:process';
-const params = require('../config_helper.js');
+const params = require('../config_helper.js').get_app_config();
 //import { param } from '../routes/transact.js';
 let Client = require('ssh2-sftp-client');
 
@@ -19,11 +19,11 @@ class SFTPClient {
     if(this.connected){
       return;
     }
-    console.log(`Connecting to ${options.host}:${options.port}`);
+    //console.log(`Connecting to ${options.host}:${options.port}`);
     try {
       await this.client.connect(options);
       this.connected = true;
-      console.log("Connected");
+      //console.log("Connected");
     } catch (err) {
       console.log('Failed to connect:', err);
     }
@@ -32,15 +32,15 @@ class SFTPClient {
   async disconnect() {
     while (this.tasks>0);
     if(!this.connected){
-        console.error('SFTP already disconnected');
+        //console.log('SFTP already disconnected');
     }
     await this.client.end();
     this.connected = false;
-    console.log("SFTP Client disconnect");
+    //console.log("SFTP Client disconnect");
   }
 
   async listFiles(remoteDir, fileGlob) {
-    console.log(`Listing ${remoteDir} ...`);
+    //console.log(`Listing ${remoteDir} ...`);
     let fileObjects;
     try {
       fileObjects = await this.client.list(remoteDir, fileGlob);
@@ -77,7 +77,7 @@ class SFTPClient {
 
   async downloadFile(remoteFile, localFile) {
     this.task+=1
-    console.log(`Downloading ${remoteFile} to ${localFile} ...`);
+    //console.log(`Downloading ${remoteFile} to ${localFile} ...`);
     try {
       await this.client.get(remoteFile, localFile);
     } catch (err) {
@@ -89,7 +89,7 @@ class SFTPClient {
 
   async deleteFile(remoteFile) {
     this.tasks+=1;
-    console.log(`Deleting ${remoteFile}`);
+    //console.log(`Deleting ${remoteFile}`);
     try {
       await this.client.delete(remoteFile);
     } catch (err) {
