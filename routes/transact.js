@@ -143,7 +143,7 @@ router.get('/obtain_record/By_member_id/pending', AuthMiddleware.verifyToken, (r
 
 router.get('/obtain_record/By_member_id/processed', AuthMiddleware.verifyToken, (req, res) => {
     const member_id = req.query.member_id;
-    TransactionRecord.getRecordsByMemberIdAndStatus(member_id, 'complete', (err, records) => {
+    TransactionRecord.getRecordsByMemberIdAndStatus(member_id, 'processed', (err, records) => {
         if (err) {
             console.error('Error in /obtain_record/By_member_id/processed:', err);
             return res.status(500).json({ error: 'Failed to fetch records' });
