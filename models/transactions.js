@@ -10,7 +10,7 @@ class TransactionRecord {
         this.user_id = sqlrow.user_id;
         this.member_id = sqlrow.member_id;
         this.member_name = sqlrow.member_name;
-        this.transaction_date = sqlrow.transaction_date; // In form of DDMMYYYY eg. 1192021 for 11th september 2021
+        this.transaction_date = sqlrow.transaction_date; // Ensure this is in the form of YYYYMMDD eg. 20210911 for 11th September 2021
         this.reference_number = sqlrow.reference_number;
         this.amount = sqlrow.amount;
         this.status = sqlrow.status || 'pending'; // Default to 'pending'
@@ -93,20 +93,18 @@ class TransactionRecord {
 
     static addTransaction(transactionData, callback) {
         if (!/^\d{8}$/.test(transactionData.transaction_date)) {
-            return callback(new Error('Invalid transaction_date format. It should be DDMMYYYY.'));
+            return callback(new Error('Invalid transaction_date format. It should be YYYYMMDD.'));
         }
 
         if (isNaN(transactionData.member_id)) {
             return callback(new Error('Invalid member_id. It should be a number.'));
         }
-        if (isNaN(transactionData.amount)) {
-            return callback(new Error('Invalid amount. It should be a number.'));
+
+        if (!transactionData.reference_number) {
+            return callback(new Error('reference_number is required.'));
         }
-        const transaction = new TransactionRecord({
-            ...transactionData,
-            reference_number: uuidv4(), // Generate a unique reference number
-            status: 'pending' // Default status to 'pending'
-        });
+
+        const transaction = new TransactionRecord(transactionData);
 
         const sql = transaction.insertSQL();
         console.log('Executing SQL:', sql);
@@ -131,6 +129,7 @@ class TransactionRecord {
             callback(null, { message: 'Transaction added', t_id: transaction.t_id });
         });
     }
+
     static removeTransaction(t_id, callback) {
         const sql = `DELETE FROM ${tblname} WHERE t_id = ?`;
         db.run(sql, [t_id], function(err) {
@@ -152,6 +151,19 @@ class TransactionRecord {
             callback(null, { message: 'Transaction status updated', t_id });
         });
     }
+
+    static updateTransactionsStatus(t_ids, status, callback) {
+        const placeholders = t_ids.map(() => '?').join(',');
+        const sql = `UPDATE ${tblname} SET status = ? WHERE t_id IN (${placeholders})`;
+        db.run(sql, [status, ...t_ids], function(err) {
+            if (err) {
+                console.error('Error updating transactions statuses:', err);
+                return callback(err);
+            }
+            callback(null, { message: 'Transactions statuses updated', changes: this.changes });
+        });
+    }
+
     static getAllRecordByStatus(status, callback) {
         const sql = `SELECT t_id FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
         db.all(sql, [status], (err, rows) => {
@@ -162,6 +174,7 @@ class TransactionRecord {
             callback(null, rows.map(row => row.t_id));
         });
     }
+
     static getAllRecordsByMemberId(member_id, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE member_id = ? ORDER BY transaction_date ASC`;
         db.all(sql, [member_id], (err, rows) => {
@@ -173,17 +186,6 @@ class TransactionRecord {
         });
     }
 
-    static batchUpdateTransactionStatus(t_ids, status, callback) {
-        const placeholders = t_ids.map(() => '?').join(',');
-        const sql = `UPDATE ${tblname} SET status = ? WHERE t_id IN (${placeholders})`;
-        db.run(sql, [status, ...t_ids], function(err) {
-            if (err) {
-                console.error('Error updating transactions statuses:', err);
-                return callback(err);
-            }
-            callback(null, { message: 'Transactions statuses updated', changes: this.changes });
-        });
-    }
     static getRecordsByMemberIdAndStatus(member_id, status, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE member_id = ? AND status = ? ORDER BY transaction_date ASC`;
         db.all(sql, [member_id, status], (err, rows) => {
@@ -196,11 +198,9 @@ class TransactionRecord {
     }
 }
 
-
 function createTable() {
     return TransactionRecord.createTable();
 }
-
 
 async function update_transaction_record(dto, success, fail) {
     try {

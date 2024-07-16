@@ -189,6 +189,9 @@
                   "transaction_date": {
                     "example": "any"
                   },
+                  "reference_number": {
+                    "example": "any"
+                  },
                   "amount": {
                     "example": "any"
                   },
@@ -328,6 +331,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -358,6 +364,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -387,6 +396,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

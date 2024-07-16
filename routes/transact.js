@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/obtain_records/pending_last', AuthMiddleware.verifyToken, (req, res) => {
     TransactionRecord.getLastStatusRecord('pending', (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/pending_last:', err);
+            console.error('Error in /obtain_records/pending:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
@@ -14,9 +14,9 @@ router.get('/obtain_records/pending_last', AuthMiddleware.verifyToken, (req, res
 });
 
 router.get('/obtain_records/processed_last', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getLastStatusRecord('processed', (err, record) => {
+    TransactionRecord.getLastStatusRecord('complete', (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/processed_last:', err);
+            console.error('Error in /obtain_records/processed:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
@@ -59,7 +59,8 @@ router.get('/obtain_record/:t_id', AuthMiddleware.verifyToken, (req, res) => {
 });
 
 router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
-    const { app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, amount, additional_info } = req.body;
+    const { app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, reference_number, amount, additional_info } = req.body;
+
     if (!/^\d{8}$/.test(transaction_date)) {
         return res.status(400).json({ error: 'Invalid transaction_date format. It should be DDMMYYYY.' });
     }
@@ -70,6 +71,7 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
     if (isNaN(amount)) {
         return res.status(400).json({ error: 'Invalid amount. It should be a number.' });
     }
+
     const transactionData = {
         app_id,
         loyalty_pid,
@@ -77,6 +79,7 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
         member_id,
         member_name,
         transaction_date,
+        reference_number,
         amount,
         additional_info: JSON.stringify(additional_info)
     };
@@ -126,7 +129,11 @@ router.get('/obtain_record/By_member_id/all', AuthMiddleware.verifyToken, (req, 
             console.error('Error in /obtain_record/By_member_id/all:', err);
             return res.status(500).json({ error: 'Failed to fetch records' });
         }
-        res.json(records);
+        if (records) {
+            res.json(records);
+        } else {
+            res.status(404).json({ error: 'Record not found' });
+        }
     });
 });
 
@@ -137,7 +144,11 @@ router.get('/obtain_record/By_member_id/pending', AuthMiddleware.verifyToken, (r
             console.error('Error in /obtain_record/By_member_id/pending:', err);
             return res.status(500).json({ error: 'Failed to fetch records' });
         }
-        res.json(records);
+        if (records) {
+            res.json(records);
+        } else {
+            res.status(404).json({ error: 'Record not found' });
+        }
     });
 });
 
@@ -148,7 +159,11 @@ router.get('/obtain_record/By_member_id/processed', AuthMiddleware.verifyToken, 
             console.error('Error in /obtain_record/By_member_id/processed:', err);
             return res.status(500).json({ error: 'Failed to fetch records' });
         }
-        res.json(records);
+        if (records) {
+            res.json(records);
+        } else {
+            res.status(404).json({ error: 'Record not found' });
+        }
     });
 });
 
