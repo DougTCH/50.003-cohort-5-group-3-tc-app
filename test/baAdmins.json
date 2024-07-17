@@ -1,0 +1,27 @@
+[
+    {
+        "username": "admin_national_banking",
+        "password": "b7zRmYx3Z9T1",
+        "appcode": "NATIONAL_BANKING"
+    },
+    {
+        "username": "admin_city_bank",
+        "password": "V5LpA9Qx1s2T",
+        "appcode": "CITY_BANK"
+    },
+    {
+        "username": "admin_royal_finance",
+        "password": "R8sZjM7v3N6Y",
+        "appcode": "ROYAL_FINANCE"
+    },
+    {
+        "username": "admin_kingsman_bank",
+        "password": "P4dN9xR2s8Qy",
+        "appcode": "KINGSMAN_BANK"
+    },
+    {
+        "username": "admin_global_bank",
+        "password": "G2vR5sN6pQ1X",
+        "appcode": "GLOBAL_BANK"
+    }
+]

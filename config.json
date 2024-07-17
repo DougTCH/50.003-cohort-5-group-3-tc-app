@@ -1,0 +1,33 @@
+{
+    "network":{
+        "port":3000,
+        "host":"http://localhost"
+    },
+    "database":{
+        "sql":"sqlite",
+        "connection_str":"./tc.db"
+    },
+    "sftp":{
+        "sftp_key":"key",
+        "key_pass":"prompt",
+        "submit_time":1,
+        "acquire_time":3,
+        "params":{
+            "host":"kaligo.files.com",
+            "username":"c5g3",
+            "port":"22",
+            "AccrualPath":"/sutd_project_2024/c5g3/Accrual/",
+            "HandbackPath":"/sutd_project_2024/c5g3/Handback/"
+        }
+    },
+    "authentication":{
+        "jwt_secret":"prompt"
+    },
+    "errorhandler":{
+        "console":true,
+        "file":{
+            "path":"./logs",
+            "filter":["sftp","console"]
+        }
+    }
+}

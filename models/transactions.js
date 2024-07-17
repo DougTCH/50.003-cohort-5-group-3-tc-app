@@ -9,13 +9,15 @@ class TransactionRecord {
         this.loyalty_pid = sqlrow.loyalty_pid;
         this.user_id = sqlrow.user_id;
         this.member_id = sqlrow.member_id;
-        this.member_name = sqlrow.member_name;
-        this.transaction_date = sqlrow.transaction_date; // Ensure this is in the form of YYYYMMDD eg. 20210911 for 11th September 2021
+        this.member_first = sqlrow.member_first;
+        this.member_last = sqlrow.member_last;
+        this.transaction_date = sqlrow.transaction_date;
         this.reference_number = sqlrow.reference_number;
         this.amount = sqlrow.amount;
         this.status = sqlrow.status || 'pending'; // Default to 'pending'
         this.additional_info = sqlrow.additional_info;
     }
+
 
     static createTable() {
         return `CREATE TABLE IF NOT EXISTS ${tblname} (
@@ -23,9 +25,10 @@ class TransactionRecord {
             app_id TEXT NOT NULL,
             loyalty_pid TEXT NOT NULL,
             user_id TEXT NOT NULL,
-            member_id INTEGER NOT NULL,
-            member_name TEXT NOT NULL,
-            transaction_date TEXT NOT NULL CHECK(transaction_date GLOB '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
+            member_id TEXT NOT NULL,
+            member_first TEXT NOT NULL,
+            member_last TEXT NOT NULL,
+            transaction_date TEXT NOT NULL,
             reference_number TEXT NOT NULL UNIQUE,
             amount INTEGER NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending',
@@ -47,7 +50,8 @@ class TransactionRecord {
                 loyalty_pid = ?,
                 user_id = ?,
                 member_id = ?,
-                member_name = ?,
+                member_first = ?,
+                member_last = ?,
                 transaction_date = ?,
                 amount = ?,
                 status = ?,
@@ -57,8 +61,11 @@ class TransactionRecord {
     }
 
     insertSQL() {
-        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, reference_number, amount, status, additional_info)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, reference_number, amount, status, additional_info)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+    }
+    getAccrualRow(idx){
+        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.reference_number,this.app_id];
     }
 
     static getLastStatusRecord(status, callback) {
@@ -115,7 +122,8 @@ class TransactionRecord {
             transaction.loyalty_pid,
             transaction.user_id,
             transaction.member_id,
-            transaction.member_name,
+            transaction.member_first,
+            transaction.member_last,
             transaction.transaction_date,
             transaction.reference_number,
             transaction.amount,
@@ -217,7 +225,8 @@ async function update_transaction_record(dto, success, fail) {
                     dto.loyalty_pid,
                     dto.user_id,
                     dto.member_id,
-                    dto.member_name,
+                    dto.member_first,
+                    dto.member_last,
                     dto.transaction_date,
                     dto.amount,
                     dto.status,
@@ -241,5 +250,6 @@ async function update_transaction_record(dto, success, fail) {
 module.exports = { 
     TransactionRecord, 
     update_transaction_record, 
-    createTable 
+    createTable,
+    tblname
 };
