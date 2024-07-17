@@ -12,7 +12,7 @@ class TransactionRecord {
         this.member_first = sqlrow.member_first;
         this.member_last = sqlrow.member_last;
         this.transaction_date = sqlrow.transaction_date;
-        this.reference_number = sqlrow.reference_number;
+        this.ref_num = sqlrow.ref_num;
         this.amount = sqlrow.amount;
         this.status = sqlrow.status || 'pending'; // Default to 'pending'
         this.additional_info = sqlrow.additional_info;
@@ -29,7 +29,7 @@ class TransactionRecord {
             member_first TEXT NOT NULL,
             member_last TEXT NOT NULL,
             transaction_date TEXT NOT NULL,
-            reference_number TEXT NOT NULL UNIQUE,
+            ref_num TEXT NOT NULL UNIQUE,
             amount INTEGER NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending',
             additional_info TEXT CHECK(length(additional_info) <= 512),
@@ -57,15 +57,15 @@ class TransactionRecord {
                 status = ?,
                 additional_info = ?
             WHERE 
-                reference_number = ?;`;
+                ref_num = ?;`;
     }
 
     insertSQL() {
-        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, reference_number, amount, status, additional_info)
+        return `INSERT INTO ${tblname} (t_id, app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, ref_num, amount, status, additional_info)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
     getAccrualRow(idx){
-        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.reference_number,this.app_id];
+        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.ref_num,this.app_id];
     }
 
     static getLastStatusRecord(status, callback) {
@@ -97,6 +97,24 @@ class TransactionRecord {
             }
         });
     }
+    static getRecordByReferenceNumber(ref_num, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE ref_num = ?`;
+        console.log('test1');
+        db.get(sql, [ref_num], (err, row) => {
+            console.log('entered');
+            if (err) {
+                console.error('Error fetching record by reference number:', err);
+                return callback(err);
+            }
+            if (row) {
+                console.log(row);                
+                callback(null, new TransactionRecord(row));
+            } else {
+                console.log('no record found');
+                callback(null, null);
+            }
+        });
+    }
 
     static addTransaction(transactionData, callback) {
         if (!/^\d{8}$/.test(transactionData.transaction_date)) {
@@ -107,8 +125,8 @@ class TransactionRecord {
             return callback(new Error('Invalid member_id. It should be a number.'));
         }
 
-        if (!transactionData.reference_number) {
-            return callback(new Error('reference_number is required.'));
+        if (!transactionData.ref_num) {
+            return callback(new Error('ref_num is required.'));
         }
 
         const transaction = new TransactionRecord(transactionData);
@@ -125,7 +143,7 @@ class TransactionRecord {
             transaction.member_first,
             transaction.member_last,
             transaction.transaction_date,
-            transaction.reference_number,
+            transaction.ref_num,
             transaction.amount,
             transaction.status,
             transaction.additional_info
@@ -212,8 +230,8 @@ function createTable() {
 
 async function update_transaction_record(dto, success, fail) {
     try {
-        if (!dto['reference_number']) throw 'No reference number';
-        db.get(`SELECT * FROM ${tblname} WHERE reference_number = ?`, [dto['reference_number']], (err, row) => {
+        if (!dto['ref_num']) throw 'No reference number';
+        db.get(`SELECT * FROM ${tblname} WHERE ref_num = ?`, [dto['ref_num']], (err, row) => {
             if (err || !row) {
                 console.error('Error fetching record for update:', err || 'No record found');
                 err = { error: 'Something went wrong' };
@@ -231,13 +249,13 @@ async function update_transaction_record(dto, success, fail) {
                     dto.amount,
                     dto.status,
                     dto.additional_info,
-                    dto.reference_number
+                    dto.ref_num
                 ], (err) => {
                     if (err) {
                         console.error('Error updating transaction:', err);
                         return fail(err);
                     }
-                    return success(`updated: ${dto['reference_number']}`);
+                    return success(`updated: ${dto['ref_num']}`);
                 });
             });
         });

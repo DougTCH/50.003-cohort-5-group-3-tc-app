@@ -59,7 +59,7 @@ router.get('/obtain_record/:t_id', AuthMiddleware.verifyToken, (req, res) => {
 });
 
 router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
-    const { app_id, loyalty_pid, user_id, member_id, member_name, transaction_date, reference_number, amount, additional_info } = req.body;
+    const { app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, ref_num, amount, additional_info } = req.body;
 
     if (!/^\d{8}$/.test(transaction_date)) {
         return res.status(400).json({ error: 'Invalid transaction_date format. It should be DDMMYYYY.' });
@@ -77,9 +77,10 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
         loyalty_pid,
         user_id,
         member_id,
-        member_name,
+        member_last,
+        member_first,
         transaction_date,
-        reference_number,
+        ref_num,
         amount,
         additional_info: JSON.stringify(additional_info)
     };
@@ -161,6 +162,24 @@ router.get('/obtain_record/By_member_id/processed', AuthMiddleware.verifyToken, 
         }
         if (records) {
             res.json(records);
+        } else {
+            res.status(404).json({ error: 'Record not found' });
+        }
+    });
+});
+router.get('/obtain_record/by_ref_num/:ref_num', AuthMiddleware.verifyToken, (req, res) => {
+    var ref_num = req.params.ref_num;
+    console.log("asdasdsdasd");
+    if (!ref_num) {
+        return res.status(400).json({ error: 'reference number is required' });
+    }
+    TransactionRecord.getRecordByReferenceNumber(ref_num, (err, record) => {
+        if (err) {
+            console.error('Error in /obtain_record/By_ref_num:', err);
+            return res.status(500).json({ error: 'Failed to fetch record' });
+        }
+        if (record) {
+            res.json(record);
         } else {
             res.status(404).json({ error: 'Record not found' });
         }
