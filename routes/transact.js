@@ -3,6 +3,29 @@ const AuthMiddleware = require('../middleware/authMiddleware');
 const { TransactionRecord } = require('../models/transactions.js');
 const router = express.Router();
 
+router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, res) => {
+    try {
+        const user_id = req.query.user_id;
+        if (!user_id) {
+            return res.status(400).json({ error: 'user_id is required' });
+        }
+
+        TransactionRecord.getAllRecordsByUserId(user_id, (err, records) => {
+            if (err) {
+                console.error('Error in /obtain_record/byUserId:', err);
+                return res.status(500).json({ error: 'Failed to fetch records' });
+            }
+            if (records.length > 0) {
+                res.json(records);
+            } else {
+                res.status(404).json({ error: 'No records found' });
+            }
+        });
+    } catch (error) {
+        console.error('Unhandled error in /obtain_record/byUserId:', error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
 router.get('/obtain_records/pending_last', AuthMiddleware.verifyToken, (req, res) => {
     TransactionRecord.getLastStatusRecord('pending', (err, record) => {
         if (err) {

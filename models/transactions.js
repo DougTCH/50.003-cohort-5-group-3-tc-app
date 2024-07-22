@@ -68,6 +68,21 @@ class TransactionRecord {
         return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.ref_num,this.app_id];
     }
 
+    static getAllRecordsByUserId(user_id, callback) {
+        if (!user_id) {
+            return callback(new Error('Invalid user_id'));
+        }
+    
+        const sql = `SELECT * FROM ${tblname} WHERE user_id = ? ORDER BY transaction_date ASC`;
+        db.all(sql, [user_id], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching all records by user_id ${user_id}:`, err);
+                return callback(err);
+            }
+            callback(null, rows.map(row => new TransactionRecord(row)));
+        });
+    }
+
     static getLastStatusRecord(status, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date DESC LIMIT 1`;
         db.get(sql, [status], (err, row) => {
@@ -191,13 +206,13 @@ class TransactionRecord {
     }
 
     static getAllRecordByStatus(status, callback) {
-        const sql = `SELECT t_id FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
+        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
         db.all(sql, [status], (err, rows) => {
             if (err) {
                 console.error(`Error fetching all records with status ${status}:`, err);
                 return callback(err);
             }
-            callback(null, rows.map(row => row.t_id));
+            callback(null, rows.map(row => new TransactionRecord(row)));
         });
     }
 
