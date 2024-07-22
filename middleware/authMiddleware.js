@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fs = require('node:fs');
+const { app } = require('../app.js');
 const prompt = require("prompt-sync")({ sigint: true });
 const params = require("../config_helper.js").get_app_config();
 var pw = params["authentication"].jwt_secret=='prompt'? 
@@ -49,9 +50,13 @@ function verifyB2BToken(req, res, next) {
 };
 
 function signToken(user,appcode){
-    return jwt.sign({ username: user, app:appcode, role:'user' }, pw, {
+    if((!user) || (!appcode)){
+        throw {error: "invalid paramaters"};
+    }
+    var tok = jwt.sign({ username: user, app:appcode, role:'user' }, pw, {
         expiresIn: '1h',
     });
+    return tok;
 }
 
 function signB2BToken(user,appcode){

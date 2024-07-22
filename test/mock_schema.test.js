@@ -10,7 +10,7 @@ beforeAll(()=>{
         "connection_str":"./mock.db"
     });
     set_config("authentication",{
-        "jwt_secret":"password123456"
+        "jwt_secret":"mockkey"
     });
     var obj = require('../app.js');
     server = obj.server
@@ -51,7 +51,10 @@ describe("Mock Setup",()=>{
             expect(users.length).toBe(28);
         });
     });
+    
+    describe("Unit Tests",()=>{
 
+    });
 
     describe("Mock User Schema Test Suite",()=>{
         const user_authkeys = {}
@@ -84,6 +87,30 @@ describe("Mock Setup",()=>{
                 request(server).post('/auth/login')
                 .send({username,password:"NOTAPASSWORD",appcode})
                 .expect(500)
+                .end((err,res)=>{
+                    if(err)return done(err);
+                    return done();
+                });
+            }
+        });
+        it("POST /auth/login:  Login users wrong app", (done)=>{
+            for(u of users){
+                const {username,password} = u;
+                request(server).post('/auth/login')
+                .send({username,password,appcode:"NOTANAPP"})
+                .expect(500)
+                .end((err,res)=>{
+                    if(err)return done(err);
+                    return done();
+                });
+            }
+        });
+        it("POST /auth/login:  Login users invalid request", (done)=>{
+            for(u of users){
+                const {username,appcode} = u;
+                request(server).post('/auth/login')
+                .send({username,appcode})
+                .expect(401)
                 .end((err,res)=>{
                     if(err)return done(err);
                     return done();
