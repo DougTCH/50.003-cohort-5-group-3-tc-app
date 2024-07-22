@@ -52,12 +52,12 @@ class SFTPClient {
 
     for (const file of fileObjects) {
       if (file.type === 'd') {
-        console.log(`${new Date(file.modifyTime).toISOString()} PRE ${file.name}`);
+        //console.log(`${new Date(file.modifyTime).toISOString()} PRE ${file.name}`);
       } else {
-        console.log(`${new Date(file.modifyTime).toISOString()} ${file.size} ${file.name}`);
+        //console.log(`${new Date(file.modifyTime).toISOString()} ${file.size} ${file.name}`);
+        fileNames.push(file.name);
       }
-
-      fileNames.push(file.name);
+      //fileNames.push(file.name);
     }
 
     return fileNames;

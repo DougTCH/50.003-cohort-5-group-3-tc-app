@@ -102,6 +102,28 @@ describe("Mock Setup",()=>{
                 });
             }
         });
+        //TODO
+        it("POST /transact/add_record: Add Valid Transaction Requests",(done)=>{
+            for(u of users){
+                const {username,appcode,password} = u;
+                request(server)
+                .set('Authorization', `Bearer ${user_authkeys[username]}`)
+                .post("/transact/add_record")
+                .send({
+                    "app_id": "any",
+                    "loyalty_pid": "any",
+                    "user_id": "any",
+                    "member_id": "any",
+                    "member_name": "any",
+                    "transaction_date": "any",
+                    "reference_number": "any",
+                    "amount": "any",
+                    "additional_info": "any",
+                    "req": "any"
+                  });
+                return done();
+            }
+        });
     });
 });
 

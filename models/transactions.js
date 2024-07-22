@@ -67,6 +67,7 @@ class TransactionRecord {
     getAccrualRow(idx){
         return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.reference_number,this.app_id];
     }
+    
 
     static getLastStatusRecord(status, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date DESC LIMIT 1`;
@@ -110,11 +111,11 @@ class TransactionRecord {
         if (!transactionData.reference_number) {
             return callback(new Error('reference_number is required.'));
         }
-
+        //Check against bank app valid lp
         const transaction = new TransactionRecord(transactionData);
 
         const sql = transaction.insertSQL();
-        console.log('Executing SQL:', sql);
+        //console.log('Executing SQL:', sql);
 
         db.run(sql, [
             transaction.t_id,
@@ -171,7 +172,20 @@ class TransactionRecord {
             callback(null, { message: 'Transactions statuses updated', changes: this.changes });
         });
     }
-
+    static getAllRecordByStatus(status, callback,full) {
+        
+        if(!full){
+            return this.getAllRecordByStatus(status,callback);
+        }
+        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
+        db.all(sql, [status], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching all records with status ${status}:`, err);
+                return callback(err);
+            }
+            callback(null, rows);
+        });
+    }
     static getAllRecordByStatus(status, callback) {
         const sql = `SELECT t_id FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
         db.all(sql, [status], (err, rows) => {
