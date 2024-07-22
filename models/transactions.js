@@ -136,10 +136,6 @@ class TransactionRecord {
             return callback(new Error('Invalid transaction_date format. It should be YYYYMMDD.'));
         }
 
-        if (isNaN(transactionData.member_id)) {
-            return callback(new Error('Invalid member_id. It should be a number.'));
-        }
-
         if (!transactionData.ref_num) {
             return callback(new Error('ref_num is required.'));
         }
@@ -174,6 +170,16 @@ class TransactionRecord {
     static removeTransaction(t_id, callback) {
         const sql = `DELETE FROM ${tblname} WHERE t_id = ?`;
         db.run(sql, [t_id], function(err) {
+            if (err) {
+                console.error('Error removing transaction:', err);
+                return callback(err);
+            }
+            callback(null, { message: 'Transaction removed', changes: this.changes });
+        });
+    }
+    static removeTransactionByRefNum(ref_num, callback) {
+        const sql = `DELETE FROM ${tblname} WHERE ref_num = ?`;
+        db.run(sql, [ref_num], function(err) {
             if (err) {
                 console.error('Error removing transaction:', err);
                 return callback(err);

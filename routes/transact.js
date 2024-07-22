@@ -87,10 +87,6 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
     if (!/^\d{8}$/.test(transaction_date)) {
         return res.status(400).json({ error: 'Invalid transaction_date format. It should be DDMMYYYY.' });
     }
-
-    if (isNaN(member_id)) {
-        return res.status(400).json({ error: 'Invalid member_id. It should be a number.' });
-    }
     if (isNaN(amount)) {
         return res.status(400).json({ error: 'Invalid amount. It should be a number.' });
     }
@@ -116,7 +112,7 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
     });
 });
 
-router.delete('/remove_record/:t_id', AuthMiddleware.verifyToken, (req, res) => {
+router.delete('/remove_record_by_tid/:t_id', AuthMiddleware.verifyToken, (req, res) => {
     const t_id = req.params.t_id;
     TransactionRecord.removeTransaction(t_id, (err, result) => {
         if (err) {
@@ -126,6 +122,18 @@ router.delete('/remove_record/:t_id', AuthMiddleware.verifyToken, (req, res) => 
         res.json(result);
     });
 });
+
+router.delete('/remove_record_by_ref_num/:ref_num', AuthMiddleware.verifyToken, (req, res) => {
+    const ref_num = req.params.ref_num;
+    TransactionRecord.removeTransactionByRefNum(ref_num, (err, result) => {
+        if (err) {
+            console.error('Error in /remove_record/:ref_num:', err);
+            return res.status(500).json({ error: 'Failed to remove transaction' });
+        }
+        res.json(result);
+    });
+});
+
 router.put('/updateTransactionStatus', AuthMiddleware.verifyToken, (req, res) => {
     const { t_id, status } = req.body;
     TransactionRecord.updateTransactionStatus(t_id, status, (err, result) => {

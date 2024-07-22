@@ -247,12 +247,57 @@
         }
       }
     },
-    "/transact/remove_record/{t_id}": {
+    "/transact/remove_record_by_tid/{t_id}": {
       "delete": {
         "description": "",
         "parameters": [
           {
             "name": "t_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "req": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transact/remove_record_by_ref_num/{ref_num}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "ref_num",
             "in": "path",
             "required": true,
             "schema": {
