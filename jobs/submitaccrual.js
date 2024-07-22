@@ -1,8 +1,7 @@
 const db = require('../services/db_adaptor.js');
 const LoyaltyPrograms = require('../models/loyalty.js');
-//const BankAppInfo = require('../models/bank.js');
-const {TransactionRecord,tblname} = require('../models/transactions.js'); 
-const {stringify} =require('csv-stringify');
+const { TransactionRecord, tblname } = require('../models/transactions.js'); 
+const { stringify } = require('csv-stringify');
 const SFTPService = require('../services/sftp_client.js');
 const fs = require('fs');
 const params = require('../config_helper.js').get_app_config();
@@ -50,5 +49,5 @@ async function submit_accrual_job(){
           });
      });
 }
-//submit_accrual_job();
+
 module.exports = submit_accrual_job;

@@ -25,6 +25,42 @@
         }
       }
     },
+    "/transact/obtain_record/byUserId": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/transact/obtain_records/pending_last": {
       "get": {
         "description": "",
@@ -183,13 +219,16 @@
                   "member_id": {
                     "example": "any"
                   },
-                  "member_name": {
+                  "member_first": {
+                    "example": "any"
+                  },
+                  "member_last": {
                     "example": "any"
                   },
                   "transaction_date": {
                     "example": "any"
                   },
-                  "reference_number": {
+                  "ref_num": {
                     "example": "any"
                   },
                   "amount": {
@@ -208,12 +247,57 @@
         }
       }
     },
-    "/transact/remove_record/{t_id}": {
+    "/transact/remove_record_by_tid/{t_id}": {
       "delete": {
         "description": "",
         "parameters": [
           {
             "name": "t_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "req": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transact/remove_record_by_ref_num/{ref_num}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "ref_num",
             "in": "path",
             "required": true,
             "schema": {
@@ -283,6 +367,9 @@
                   },
                   "status": {
                     "example": "any"
+                  },
+                  "req": {
+                    "example": "any"
                   }
                 }
               }
@@ -320,6 +407,9 @@
                     "example": "any"
                   },
                   "status": {
+                    "example": "any"
+                  },
+                  "req": {
                     "example": "any"
                   }
                 }
@@ -410,6 +500,43 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/transact/obtain_record/by_ref_num/{ref_num}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "ref_num",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -580,6 +707,9 @@
                     "example": "any"
                   },
                   "terms_c_link": {
+                    "example": "any"
+                  },
+                  "member_format": {
                     "example": "any"
                   },
                   "decoded": {

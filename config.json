@@ -9,7 +9,7 @@
     },
     "sftp":{
         "sftp_key":"key",
-        "key_pass":"prompt",
+        "key_pass":"98389939",
         "submit_time":1,
         "acquire_time":3,
         "params":{
