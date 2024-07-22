@@ -107,8 +107,8 @@ describe("Mock Setup",()=>{
             for(u of users){
                 const {username,appcode,password} = u;
                 request(server)
-                .set('Authorization', `Bearer ${user_authkeys[username]}`)
                 .post("/transact/add_record")
+                .set('Authorization', `Bearer ${user_authkeys[username]}`)
                 .send({
                     "app_id": "any",
                     "loyalty_pid": "any",
