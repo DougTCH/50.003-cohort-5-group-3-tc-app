@@ -23,6 +23,7 @@ class LoyaltyProgramInfo{
             enrol_link TEXT NOT NULL,
             terms_c_link TEXT NOT NULL,
             conversion TEXT NOT NULL,
+            member_format TEXT NOT NULL,
             FOREIGN KEY (userid)
                 REFERENCES users(hashed_id)
                     ON UPDATE RESTRICT
@@ -39,12 +40,13 @@ class LoyaltyProgramInfo{
                 enrol_link = ${this.enrol_l},
                 terms_c_link = ${this.tc_l},
                 conversion = ${this.conversion}
+                member_format = ${this.member_format}
             WHERE 
                 pid = ${this.pid};`
     }
     insertSQL(userid){
-        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link,conversion)
-        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}','${this.conversion}');`
+        return `INSERT INTO ${tblname} (pid, userid, name, currency, process_time, description, enrol_link, terms_c_link,conversion,member_format)
+        VALUES ('${this.pid}','${userid}','${this.name}','${this.cur_name}','${this.p_time}','${this.des}','${this.enrol_l}','${this.terms_c_link}','${this.conversion}', ${this.member_format});`
     }
 }
 

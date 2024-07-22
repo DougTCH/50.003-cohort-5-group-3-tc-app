@@ -1,8 +1,7 @@
 const db = require('../services/db_adaptor.js');
 const LoyaltyPrograms = require('../models/loyalty.js');
-//const BankAppInfo = require('../models/bank.js');
-const {TransactionRecord,tblname} = require('../models/transactions.js'); 
-const {stringify} =require('csv-stringify');
+const { TransactionRecord, tblname } = require('../models/transactions.js'); 
+const { stringify } = require('csv-stringify');
 const SFTPService = require('../services/sftp_client.js');
 const fs = require('fs');
 const params = require('../config_helper.js').get_app_config();
@@ -32,7 +31,7 @@ async function submit_accrual_job(){
                               if(err) throw err;
                               var date = new Date();
                               var localpath ='./AccrualFiles/'; 
-                              var fn =`${k}_ACCRUAL_${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}.csv`;
+                              var fn =`${k}_ACCRUAL_${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}.txt`;
                               fs.writeFileSync(`${localpath}${fn}`,output);
                               SFTPService.Client.connect(SFTPService.Client.params).then(()=>{
                                    SFTPService.Client.uploadFile(`${localpath}${fn}`,`${params['sftp'].params.AccrualPath}${fn}`).then(
@@ -48,7 +47,7 @@ async function submit_accrual_job(){
                     }
                }
           });
-     })
+     });
 }
-//submit_accrual_job();
+
 module.exports = submit_accrual_job;

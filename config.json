@@ -9,7 +9,7 @@
     },
     "sftp":{
         "sftp_key":"key",
-        "key_pass":"prompt",
+        "key_pass":"98389939",
         "submit_time":1,
         "acquire_time":3,
         "params":{
@@ -17,7 +17,8 @@
             "username":"c5g3",
             "port":"22",
             "AccrualPath":"/sutd_project_2024/c5g3/Accrual/",
-            "HandbackPath":"/sutd_project_2024/c5g3/Handback/"
+            "HandbackPath":"/sutd_project_2024/c5g3/Handback/",
+            "TempPath":"./temp/"
         }
     },
     "authentication":{

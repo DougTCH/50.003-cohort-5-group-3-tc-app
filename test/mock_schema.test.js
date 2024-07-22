@@ -10,7 +10,7 @@ beforeAll(()=>{
         "connection_str":"./mock.db"
     });
     set_config("authentication",{
-        "jwt_secret":"password123456"
+        "jwt_secret":"mockkey"
     });
     var obj = require('../app.js');
     server = obj.server
@@ -51,7 +51,10 @@ describe("Mock Setup",()=>{
             expect(users.length).toBe(28);
         });
     });
+    
+    describe("Unit Tests",()=>{
 
+    });
 
     describe("Mock User Schema Test Suite",()=>{
         const user_authkeys = {}
@@ -90,6 +93,30 @@ describe("Mock Setup",()=>{
                 });
             }
         });
+        it("POST /auth/login:  Login users wrong app", (done)=>{
+            for(u of users){
+                const {username,password} = u;
+                request(server).post('/auth/login')
+                .send({username,password,appcode:"NOTANAPP"})
+                .expect(500)
+                .end((err,res)=>{
+                    if(err)return done(err);
+                    return done();
+                });
+            }
+        });
+        it("POST /auth/login:  Login users invalid request", (done)=>{
+            for(u of users){
+                const {username,appcode} = u;
+                request(server).post('/auth/login')
+                .send({username,appcode})
+                .expect(401)
+                .end((err,res)=>{
+                    if(err)return done(err);
+                    return done();
+                });
+            }
+        });
         it("POST /auth/login:   Login users valid credentials",(done)=>{
             for(u of users){
                 const {username,appcode,password} = u;
@@ -100,6 +127,28 @@ describe("Mock Setup",()=>{
                     expect(res.body.token.length>0).toBe(true);
                     return done();
                 });
+            }
+        });
+        //TODO
+        it("POST /transact/add_record: Add Valid Transaction Requests",(done)=>{
+            for(u of users){
+                const {username,appcode,password} = u;
+                request(server)
+                .post("/transact/add_record")
+                .set('Authorization', `Bearer ${user_authkeys[username]}`)
+                .send({
+                    "app_id": "any",
+                    "loyalty_pid": "any",
+                    "user_id": "any",
+                    "member_id": "any",
+                    "member_name": "any",
+                    "transaction_date": "any",
+                    "reference_number": "any",
+                    "amount": "any",
+                    "additional_info": "any",
+                    "req": "any"
+                  });
+                return done();
             }
         });
     });
