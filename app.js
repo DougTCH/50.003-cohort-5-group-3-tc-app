@@ -25,7 +25,8 @@ const job_s = schedule.scheduleJob(rule_submit, function(){
 // const job_a = schedule.scheduleJob(rule_acquire, function(){
 //   require('./jobs/gethandback.js').get_handback_job();
 // });
-
+const cors = require('cors');
+app.use(cors());
 
 
 schema();
