@@ -1,4 +1,4 @@
-var app_config = require('../config_helper.js').get_app_config();
+var app_config = require('../config_helper.js').get_app_config(true);
 var con_str = app_config["database"].connection_str;
 var sqlite3 = require('sqlite3').verbose();
 //TODO use diff file open modes

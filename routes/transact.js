@@ -83,14 +83,12 @@ router.get('/obtain_record/:t_id', AuthMiddleware.verifyToken, (req, res) => {
 
 router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
     const { app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, ref_num, amount, additional_info } = req.body;
-
     if (!/^\d{8}$/.test(transaction_date)) {
         return res.status(400).json({ error: 'Invalid transaction_date format. It should be DDMMYYYY.' });
     }
     if (isNaN(amount)) {
         return res.status(400).json({ error: 'Invalid amount. It should be a number.' });
     }
-
     const transactionData = {
         app_id,
         loyalty_pid,
@@ -108,7 +106,7 @@ router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
             console.error('Error in /add_record:', err);
             return res.status(500).json({ error: 'Failed to add transaction' });
         }
-        res.json(result);
+        return res.status(200).json(result);
     });
 });
 

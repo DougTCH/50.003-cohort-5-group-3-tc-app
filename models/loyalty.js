@@ -11,6 +11,12 @@ class LoyaltyProgramInfo{
         this.enrol_l = sqlrow.enrol_link;
         this.tc_l = sqlrow.terms_c_link;
         this.conversion = sqlrow.conversion;
+        if(sqlrow.member_format){
+            this.member_format = sqlrow.member_format;
+        }else{
+            this.member_format = "11111";
+        }
+        
     }
     static createTable(){
         return `CREATE TABLE IF NOT EXISTS ${tblname} (

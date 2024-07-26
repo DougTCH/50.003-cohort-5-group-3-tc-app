@@ -49,7 +49,7 @@ function connect_wrapper(args,next){
                     var fpname =  `${remotedir}${f}`;
                     SFTPService.Client.downloadFile(fpname,workingdir+f).then(()=>{
                          var buff = fs.readFileSync(workingdir+f);
-                         var recs = parse(buff);
+                         var recs = parse(buff);//csv parse
                          for(r of recs){
                               var h = new Handback(r);
                               if(h.ref_uuid in args){

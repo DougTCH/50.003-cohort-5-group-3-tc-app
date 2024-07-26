@@ -142,7 +142,6 @@ class TransactionRecord {
         }
         //Check against bank app valid lp
         const transaction = new TransactionRecord(transactionData);
-
         const sql = transaction.insertSQL();
         //console.log('Executing SQL:', sql);
         db.run(sql, [

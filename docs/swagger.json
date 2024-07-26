@@ -290,8 +290,6 @@
             }
           }
         }
-<<<<<<< HEAD
-=======
       }
     },
     "/transact/remove_record_by_ref_num/{ref_num}": {
@@ -555,7 +553,6 @@
             "bearerAuth": []
           }
         ]
->>>>>>> 40a545e3080d8f3df4686ca53aec69cd1f725730
       }
     },
     "/auth/register": {
@@ -578,7 +575,7 @@
                   "username": {
                     "example": "any"
                   },
-                  "app_code": {
+                  "appcode": {
                     "example": "any"
                   },
                   "password": {
@@ -617,7 +614,7 @@
                   "password": {
                     "example": "any"
                   },
-                  "app_code": {
+                  "appcode": {
                     "example": "any"
                   }
                 }
@@ -656,7 +653,7 @@
                   "password": {
                     "example": "any"
                   },
-                  "app_code": {
+                  "appcode": {
                     "example": "any"
                   }
                 }
@@ -712,12 +709,9 @@
                   "terms_c_link": {
                     "example": "any"
                   },
-<<<<<<< HEAD
-=======
                   "member_format": {
                     "example": "any"
                   },
->>>>>>> 40a545e3080d8f3df4686ca53aec69cd1f725730
                   "decoded": {
                     "example": "any"
                   },

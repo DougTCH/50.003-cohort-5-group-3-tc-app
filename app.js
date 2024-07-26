@@ -8,7 +8,7 @@ const swaggerjsonFilePath = require("./docs/swagger.json");
 const SFTPService = require('./services/sftp_client.js');
 const db = require('./services/db_adaptor.js');
 const schedule = require('node-schedule');
-const params = require("./config_helper.js").get_app_config();
+const params = require("./config_helper.js").get_app_config(true);
 const port =  params["network"].port||3000;
 const submit_accrual_job = require('./jobs/submitaccrual.js');
 

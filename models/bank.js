@@ -27,7 +27,7 @@ class BankAppInfo{
         VALUES ('${this.pid}','${this.name}','${this.valid_lp}');`
     }
     getLPArray(){
-        return JSON.parse(this.valid_lp);
+        return this.valid_lp.split(',');
     }
     updateLPArray(arr){
         this.valid_lp = JSON.stringify(arr);
@@ -36,8 +36,8 @@ class BankAppInfo{
 
 async function getBankAppInfo(pid,callback){
     db.get(`SELECT * FROM ${tblname} WHERE pid = '${pid}'`,(err,row)=>{
-        console.log(pid+' '+row);
-        if(err) return callback(err,null);
+        //console.log(pid+' '+row.valid_lp);
+        if(err) return callback(err,pid);
         if(row) return callback(null,new BankAppInfo(row));
         return callback('Not found',null);
     });
