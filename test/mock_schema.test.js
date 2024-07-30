@@ -21,7 +21,7 @@ beforeAll(()=>{
     
     try{
         users = JSON.parse(fs.readFileSync('./test/users.json'));
-        console.log(users);
+        //console.log(users);
     }catch(err){
         console.error(err);
         haserr = true;
@@ -138,16 +138,33 @@ describe("Mock Setup",()=>{
         });
         //TODO
         
-        test.each(JSON.parse(fs.readFileSync('./test/users.json')).map((v)=>[v,user_authkeys[v.username],200]))("POST /transact/add_record: Add Valid Transaction Requests",async (u,utok,status)=>{
-            // for(u of users){
-            // console.log(u.username);
-            // const {username,appcode,password} = u;
+        
+    });
+});
+describe("Transaction Records",()=>{
+    
+test.each(JSON.parse(fs.readFileSync('./test/users.json')).map((v)=>[v,null,200]))("POST /transact/add_record: Add Valid Transaction Requests",async (u,utok,status)=>{
+    // for(u of users){
+    // console.log(u.username);
+    // const {username,appcode,password} = u;
+    request(server).post('/auth/login').send({username:u.username,password:u.password,appcode:u.appcode})
+        .expect(200).end(async (err,res)=>{
+            if(err){
+                console.error(`Login Fail ${u.username}-----${err}`);
+                return;
+            }
+            //console.log(u.username);
+            expect(!(res.body.token in toks)).toBe(true);
+            toks[res.body.token] = 1;
+            utok = res.body.token;
+            expect(res.body.token.length>10).toBe(true);
             if(!utok){
                 console.error(`${u.username}-----`);
-                //expect(false).toBe(true);
+                expect(false).toBe(true);
+                return;
             }
             //console.log(appcode);
-                await getBankAppInfo(u.appcode,async (err,arg)=>{
+            await getBankAppInfo(u.appcode,async (err,arg)=>{
                     if(err){console.log(u.username);return;}//console.error(`${err} ${arg}`);return;}
                     else{
                     //console.log(`Bearer ${user_authkeys[username]}`);
@@ -167,11 +184,10 @@ describe("Mock Setup",()=>{
                         "additional_info": "tonnes of additionl info",
                       }).expect(200).end((err,res)=>{
                         if(err)console.error(err);
-                        return;
+                        return done(err);
                       });
                     }
                 });
-                //break;
         });
     });
 });
