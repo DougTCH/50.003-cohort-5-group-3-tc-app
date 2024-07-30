@@ -77,6 +77,7 @@ async function login(username,appcode,password,db,success,failed){
         `SELECT hashed_id uid, hashed_pw pwdhash FROM users
         WHERE hashed_id = '${u.hashedid}'`,
         async (err,row)=>{
+            try{
             if(err){
                 console.log(`Internal Server Error login: ${err}`);
                 return failed("Failed to login");
@@ -86,6 +87,8 @@ async function login(username,appcode,password,db,success,failed){
                 if(await bcrypt.compare(password,row.pwdhash)){
                     return success(AuthMiddleware.signToken(username,appcode));
                 }
+            }}catch{
+                return failed("Login Attempt failed");
             }
             return failed("Login Attempt failed");
         });  

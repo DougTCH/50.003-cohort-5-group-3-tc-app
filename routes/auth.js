@@ -8,6 +8,7 @@ const db = require('../services/db_adaptor.js');
 router.post('/register', async (req, res) => {
     try {
         const { username, appcode, password } = req.body;
+        if(!username||!appcode||!password)throw new Error("Invalid Params");
         await createUser(username,appcode,password,db,()=>{
             return res.status(201).json({ message: `success`});
         },
@@ -27,11 +28,11 @@ router.post('/login', async (req, res) => {
     try {   
         const { username, password, appcode } = req.body;
         //const user = {username:username, password:"123456"}
-        if (!username || !password) {
+        if (!username || !password || !appcode) {
             return res.status(401).json({ error: 'Authentication failed' });
         }
 
-        loginUser(username,appcode,password,db,(token)=>{
+        await loginUser(username,appcode,password,db,(token)=>{
             res.status(200).json({ token });
         },(err)=>{
             res.status(500).json({ error: 'Login failed' });    
