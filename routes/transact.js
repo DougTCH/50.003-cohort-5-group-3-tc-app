@@ -1,6 +1,7 @@
 const express = require('express');
 const AuthMiddleware = require('../middleware/authMiddleware');
 const { TransactionRecord } = require('../models/transactions.js');
+const submit_accrual_job = require('../jobs/submitaccrual.js');
 const router = express.Router();
 
 router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, res) => {
@@ -215,5 +216,11 @@ router.get('/obtain_record/by_ref_num/:ref_num', AuthMiddleware.verifyToken, (re
     });
 });
 
+router.post('/gen_acc',(req,res)=>{
+    submit_accrual_job().then(()=>{
+        console.log("DONE ACC");
+    });
+    return res.status(200).json({success:1});
+});
 
 module.exports = router;

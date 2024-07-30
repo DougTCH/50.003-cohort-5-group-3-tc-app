@@ -141,6 +141,7 @@ class TransactionRecord {
             return callback(new Error('ref_num is required.'));
         }
         //Check against bank app valid lp
+        //console.log(`Hello inserting for ${transactionData.user_id}`);
         const transaction = new TransactionRecord(transactionData);
         const sql = transaction.insertSQL();
         //console.log('Executing SQL:', sql);
