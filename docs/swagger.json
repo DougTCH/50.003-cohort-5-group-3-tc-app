@@ -555,6 +555,16 @@
         ]
       }
     },
+    "/transact/gen_acc": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "description": "",
