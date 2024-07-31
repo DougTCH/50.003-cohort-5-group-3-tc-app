@@ -84,10 +84,11 @@ async function update_loyalty_program(dto,success,fail){
 }
 
 async function get_loyalty_program(pidlist,callback){
+    console.log("Printing PID LSIT");
+    console.log(pidlist);
     db.all(`SELECT * FROM ${tblname} 
         WHERE pid IN (${pidlist.map((v)=>{return `"${v}"`})})`,(err,rows)=>{
-            rows.map((v)=>{v.userid = 0; return v})
-        callback(err,rows);
+        callback(err,rows.map((v)=>{v.userid = 0; return v}));
     });
 }
 

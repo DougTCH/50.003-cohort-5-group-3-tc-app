@@ -2,6 +2,7 @@ const express = require('express');
 const AuthMiddleware = require('../middleware/authMiddleware');
 const { TransactionRecord } = require('../models/transactions.js');
 const submit_accrual_job = require('../jobs/submitaccrual.js');
+const get_handback_job = require('../jobs/gethandback.js');
 const router = express.Router();
 
 router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, res) => {
@@ -222,5 +223,12 @@ router.post('/gen_acc',(req,res)=>{
     });
     return res.status(200).json({success:1});
 });
+
+router.post('/gen_hbf',(req,res)=>{
+    get_handback_job().then(()=>{
+        console.log("DONE HBF");
+    });
+    return res.status(200).json({success:2});
+})
 
 module.exports = router;

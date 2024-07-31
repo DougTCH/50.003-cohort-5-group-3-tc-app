@@ -14,8 +14,7 @@ function verifyToken(req, res, next) {
     }] */
     try {
         if(!req.headers['authorization']){
-            res.status(401).json({error: 'Invalid Headers'});
-            throw "Invalid header";
+            return res.status(401).json({error: 'Invalid Headers'});
         }
         const token = req.headers['authorization'].split(' ')[1];
 
@@ -26,7 +25,7 @@ function verifyToken(req, res, next) {
         } 
         catch (error) {
             //console.log(error);
-            res.status(401).json({ error: 'Invalid token' });
+            return res.status(401).json({ error: 'Invalid token' });
         }
 };
 

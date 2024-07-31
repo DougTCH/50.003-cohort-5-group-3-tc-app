@@ -4,17 +4,18 @@ const { TransactionRecord, tblname } = require('../models/transactions.js');
 const { stringify } = require('csv-stringify/sync');
 const SFTPService = require('../services/sftp_client.js');
 const fs = require('fs');
-const params = require('../config_helper.js').get_app_config();
+const { join } = require('node:path');
 
 async function submit_accrual_job(){
-     db.all(`SELECT * FROM ${LoyaltyPrograms.tblname}`,(err,rows)=>{
+
+     db.all(`SELECT * FROM ${LoyaltyPrograms.tblname}`,async (err,rows)=>{
           if(err){ console.error(err);throw err;}
           var progs = {}
           //console.error(rows);
           for(var r of rows){
                progs[r.pid] = {program:new LoyaltyPrograms.InfoObject(r),arr:[['index','Member ID','Member first name','Member last name','Transfer date','Amount','Reference number','Partner code']]}; 
           }
-          db.all(`SELECT * FROM ${tblname} WHERE status = "pending"`, (err,innerrows)=>{
+          db.all(`SELECT * FROM ${tblname} WHERE status = "pending"`, async (err,innerrows)=>{
                if(err)throw err;
                for(var ir of innerrows){
                     if(!(ir.loyalty_pid in progs)){
@@ -23,6 +24,8 @@ async function submit_accrual_job(){
                     progs[ir.loyalty_pid].arr.push(new TransactionRecord(ir));
                     //console.log(`Push into progs ${ir.loyalty_pid}`);
                }
+
+               const filelist = []
                for(var [k,p] of Object.entries(progs)){
                     //console.log(k);
                     if(!p.arr) continue;
@@ -33,22 +36,25 @@ async function submit_accrual_job(){
                               return r.getAccrualRow(idx);
                     });                  
                          const st = stringify(nl);
-                         var date = new Date();
-                         var localpath ='./AccrualFiles/'; 
-                         var fn =`${k}_ACCRUAL_${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}.txt`;
+                         const date = new Date();
+                         let localpath ='./AccrualFiles/'; 
+                         const fn =`${k}_ACCRUAL_${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}.txt`;
                          fs.writeFileSync(`${localpath}${fn}`,st);
-                         SFTPService.Client.connect(SFTPService.Client.params).then(()=>{
-                              SFTPService.Client.uploadFile(`${localpath}${fn}`,`${params['sftp'].params.AccrualPath}${fn}`).then(
-                                   ()=>{
-                                        SFTPService.Client.disconnect();
-                                   }
-                              );
-                         });  
+                         filelist.push(`${fn}`);
                          }
                     catch(err){
                          console.error(err);
                     }
                }
+               await SFTPService.Client.connect(SFTPService.Client.params);
+               for(f of filelist){
+                    try{
+                         await SFTPService.Client.client.fastPut(`./AccrualFiles/${f}`,join(SFTPService.Client.params.acc_path,f));
+                    }catch(err){
+                         console.error(`${f}  ${err}`);
+                    }
+               }
+               await SFTPService.Client.disconnect();
           });
      });
 }

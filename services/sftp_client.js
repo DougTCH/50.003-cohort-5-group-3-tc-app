@@ -3,7 +3,7 @@ const TransferConnectCrypt = require('./cryptography.js');
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('node:fs');
 //import { config } from 'node:process';
-const params = require('../config_helper.js').get_app_config();
+const params = require('../config_helper.js').get_app_config(true);
 //import { param } from '../routes/transact.js';
 let Client = require('ssh2-sftp-client');
 
@@ -36,7 +36,7 @@ class SFTPClient {
     }
     await this.client.end();
     this.connected = false;
-    //console.log("SFTP Client disconnect");
+    console.log("SFTP Client disconnect");
   }
 
   async listFiles(remoteDir, fileGlob) {
@@ -124,7 +124,15 @@ if(sftp_params.sftp_key){
   throw {error: "Bad SFTP Params"};
 }
 
-const parsed = { host:sftp_params.params.host, username:sftp_params.params.username,privateKey:privatekey,port:sftp_params.params.port};
+const parsed = { 
+  host:sftp_params.params.host,
+  username:sftp_params.params.username,
+  privateKey:privatekey,
+  port:sftp_params.params.port,
+  acc_path:sftp_params.params.AccrualPath,
+  hb_path:sftp_params.params.HandbackPath
+};
+
 const client = new SFTPClient(parsed);
 
 module.exports = SFTPService = {Client: client,onSIGINT:async ()=>{await client.disconnect();}};
