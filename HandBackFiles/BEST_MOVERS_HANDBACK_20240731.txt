@@ -1,0 +1,2 @@
+transfer_date,amount,reference_number,outcome_code
+20240808,10000,eecb681f4031442a90d22e8c82cf98b1,0000
