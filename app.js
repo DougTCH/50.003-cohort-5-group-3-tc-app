@@ -11,6 +11,10 @@ const schedule = require('node-schedule');
 const params = require("./config_helper.js").get_app_config(true);
 const port =  params["network"].port||3000;
 const submit_accrual_job = require('./jobs/submitaccrual.js');
+const webpush = require("web-push");
+const PushNotifications = require("node-pushnotifications");
+
+
 
 const rule_submit = new schedule.RecurrenceRule();
 rule_submit.hour = 1; //1 am recurrence

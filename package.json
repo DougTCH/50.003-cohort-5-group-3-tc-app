@@ -21,6 +21,7 @@
     "express": "^4.19.2",
     "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
+    "node-pushnotifications": "^3.1.1",
     "node-schedule": "^2.1.1",
     "prompt-sync": "^4.2.0",
     "sqlite3": "^5.1.7",
@@ -29,6 +30,7 @@
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "web-push": "^3.6.7"
   }
 }
