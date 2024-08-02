@@ -64,5 +64,16 @@ describe("Transaction Records Unit Tests", ()=>{
         });
         expect(TransactionRecord.checkValidity(tr,(errmsg)=>expect(errmsg==null).toBe(false))).toBe(false);
     });
-
+    it("Check Record Validity Missing Member info",()=>{
+        const tr = new TransactionRecord({
+            "app_id":"NATIONAL_BANKING",
+            "loyalty_pid":"JOYSPRING_TOYS",
+            "user_id":"01238771jb2v1723",
+            "transaction_date":"20240808",
+            "amount":1000000,
+            "status":"pending",
+            "additional_info":"Hello Hello additional info"
+        });
+        expect(TransactionRecord.checkValidity(tr,(errmsg)=>expect(errmsg==null).toBe(true))).toBe(true);
+    });
 });
