@@ -61,7 +61,9 @@ async function get_handback_job(){
           await SFTPService.Client.connect(SFTPService.Client.params);
           const fileList = await SFTPService.Client.client.list(SFTPService.Client.params.hb_path);
           for(let fn of fileList){
-               await SFTPService.Client.client.fastGet(join(SFTPService.Client.params.hb_path,fn.name),`./HandBackFiles/${fn.name}`);
+               let remotefn = join(SFTPService.Client.params.hb_path,fn.name);
+               await SFTPService.Client.client.fastGet(remotefn,`./HandBackFiles/${fn.name}`);
+               await SFTPService.Client.client.delete(remotefn);
                toprocess.push(`./HandBackFiles/${fn.name}`);
           }
      }catch(err){
