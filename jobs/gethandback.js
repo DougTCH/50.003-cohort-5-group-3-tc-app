@@ -56,7 +56,7 @@ function update_rows(transactionRecords){
 async function get_handback_job(){
      const t_recs=new Map();
      console.log("Get Handback Job Triggered");
-     toprocess = []
+     toprocess = [];
      try{
           await SFTPService.Client.connect(SFTPService.Client.params);
           const fileList = await SFTPService.Client.client.list(SFTPService.Client.params.hb_path);

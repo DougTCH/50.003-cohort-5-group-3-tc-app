@@ -1,2 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user17_m_id,Olivia,Gonzalez,20240808,10000,fd29f8c193c64cb585c31227893eb08c,CITY_BANK

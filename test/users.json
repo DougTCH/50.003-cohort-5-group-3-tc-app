@@ -77,7 +77,7 @@
       "appcode": "GLOBAL_TRUST",
       "member_first": "Hank",
       "member_last": "Moore",
-      "valid_lp": ["KINGSMAN_SERVICES", "NATIONAL_BANKING", "PASSION_PAY"]
+      "valid_lp": ["KINGSMAN_SERVICES", "PASSION_PAY"]
     },
     {
       "username": "user11",
@@ -133,7 +133,7 @@
       "appcode": "CITY_BANK",
       "member_first": "Olivia",
       "member_last": "Gonzalez",
-      "valid_lp": ["NATIONAL_BANKING", "PASSION_PAY", "PREMIUM_STEAKHOUSE"]
+      "valid_lp": ["PASSION_PAY", "PREMIUM_STEAKHOUSE"]
     },
     {
       "username": "user18",
@@ -181,7 +181,7 @@
       "appcode": "ROYAL_FINANCE",
       "member_first": "Uma",
       "member_last": "Walker",
-      "valid_lp": ["HIS_AND_HERS", "KINGSMAN_SERVICES", "NATIONAL_BANKING"]
+      "valid_lp": ["HIS_AND_HERS", "KINGSMAN_SERVICES"]
     },
     {
       "username": "user24",

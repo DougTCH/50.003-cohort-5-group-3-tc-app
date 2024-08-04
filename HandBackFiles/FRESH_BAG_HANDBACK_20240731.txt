@@ -1,2 +1,0 @@
-transfer_date,amount,reference_number,outcome_code
-20240808,10000,24aab6c2f9ac44c8b78aa6d992f47175,0000
