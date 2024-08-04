@@ -101,12 +101,14 @@ function update_rows(transactionRecords){
 async function get_handback_job(){
      const t_recs=new Map();
      console.log("Get Handback Job Triggered");
-     toprocess = []
+     toprocess = [];
      try{
           await SFTPService.Client.connect(SFTPService.Client.params);
           const fileList = await SFTPService.Client.client.list(SFTPService.Client.params.hb_path);
           for(let fn of fileList){
-               //await SFTPService.Client.client.fastGet(join(SFTPService.Client.params.hb_path,fn.name),`./HandBackFiles/${fn.name}`);
+               let remotefn = join(SFTPService.Client.params.hb_path,fn.name);
+               await SFTPService.Client.client.fastGet(remotefn,`./HandBackFiles/${fn.name}`);
+               await SFTPService.Client.client.delete(remotefn);
                toprocess.push(`./HandBackFiles/${fn.name}`);
           }
      }catch(err){

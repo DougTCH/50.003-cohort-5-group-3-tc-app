@@ -132,13 +132,26 @@ class TransactionRecord {
         });
     }
 
-    static addTransaction(transactionData, callback) {
+    static checkValidity(transactionData,callback){
         if (!/^\d{8}$/.test(transactionData.transaction_date)) {
-            return callback(new Error('Invalid transaction_date format. It should be YYYYMMDD.'));
+            callback(new Error('Invalid transaction_date format. It should be YYYYMMDD.'));
+            return false;
         }
-
         if (!transactionData.ref_num) {
-            return callback(new Error('ref_num is required.'));
+            callback(new Error('ref_num is required.'));
+            return false;
+        }
+        if (transactionData.amount<=0) {
+            callback(new Error('Transaction amount is invalid.'));
+            return false;
+        }
+        return true;
+    }
+
+    static addTransaction(transactionData, callback) {
+        
+        if(!TransactionRecord.checkValidity(transactionData,callback)){
+            return false;
         }
         //Check against bank app valid lp
         const transaction = new TransactionRecord(transactionData);

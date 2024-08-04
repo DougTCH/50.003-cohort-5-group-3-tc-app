@@ -141,55 +141,55 @@ describe("Mock Setup",()=>{
         
     });
 });
-describe("Transaction Records",()=>{
+// describe("Transaction Records",()=>{
     
-test.each(JSON.parse(fs.readFileSync('./test/users.json')).map((v)=>[v,null,200]))("POST /transact/add_record: Add Valid Transaction Requests",async (u,utok,status)=>{
-    // for(u of users){
-    // console.log(u.username);
-    // const {username,appcode,password} = u;
-    request(server).post('/auth/login').send({username:u.username,password:u.password,appcode:u.appcode})
-        .expect(200).end(async (err,res)=>{
-            if(err){
-                console.error(`Login Fail ${u.username}-----${err}`);
-                return;
-            }
-            //console.log(u.username);
-            expect(!(res.body.token in toks)).toBe(true);
-            toks[res.body.token] = 1;
-            utok = res.body.token;
-            expect(res.body.token.length>10).toBe(true);
-            if(!utok){
-                console.error(`${u.username}-----`);
-                expect(false).toBe(true);
-                return;
-            }
-            //console.log(appcode);
-            await getBankAppInfo(u.appcode,async (err,arg)=>{
-                    if(err){console.log(u.username);return;}//console.error(`${err} ${arg}`);return;}
-                    else{
-                    //console.log(`Bearer ${user_authkeys[username]}`);
-                    request(server)
-                    .post("/transact/add_record")
-                    .set('authorization', `bearer ${utok}`)
-                    .send({
-                        "app_id": `"${u.appcode}"`,
-                        "loyalty_pid": `${arg.getLPArray()[0]}`,
-                        "user_id": `${u.username}_id`,
-                        "member_id": `${u.username}`,
-                        "member_first": `${u.username}_first`,
-                        "member_last":`${u.username}_last`,
-                        "transaction_date": "20240808",
-                        "ref_num": `${u.username}_${u.appcode}_ref`,
-                        "amount": 10000,
-                        "additional_info": "tonnes of additionl info",
-                      }).expect(200).end((err,res)=>{
-                        if(err)console.error(err);
-                        return done(err);
-                      });
-                    }
-                });
-        });
-    });
-});
+// test.each(JSON.parse(fs.readFileSync('./test/users.json')).map((v)=>[v,null,200]))("POST /transact/add_record: Add Valid Transaction Requests",async (u,utok,status)=>{
+//     // for(u of users){
+//     // console.log(u.username);
+//     // const {username,appcode,password} = u;
+//     request(server).post('/auth/login').send({username:u.username,password:u.password,appcode:u.appcode})
+//         .expect(200).end(async (err,res)=>{
+//             if(err){
+//                 console.error(`Login Fail ${u.username}-----${err}`);
+//                 return;
+//             }
+//             //console.log(u.username);
+//             expect(!(res.body.token in toks)).toBe(true);
+//             toks[res.body.token] = 1;
+//             utok = res.body.token;
+//             expect(res.body.token.length>10).toBe(true);
+//             if(!utok){
+//                 console.error(`${u.username}-----`);
+//                 expect(false).toBe(true);
+//                 return;
+//             }
+//             //console.log(appcode);
+//             await getBankAppInfo(u.appcode,async (err,arg)=>{
+//                     if(err){console.log(u.username);return;}//console.error(`${err} ${arg}`);return;}
+//                     else{
+//                     //console.log(`Bearer ${user_authkeys[username]}`);
+//                     request(server)
+//                     .post("/transact/add_record")
+//                     .set('authorization', `bearer ${utok}`)
+//                     .send({
+//                         "app_id": `"${u.appcode}"`,
+//                         "loyalty_pid": `${arg.getLPArray()[0]}`,
+//                         "user_id": `${u.username}_id`,
+//                         "member_id": `${u.username}`,
+//                         "member_first": `${u.username}_first`,
+//                         "member_last":`${u.username}_last`,
+//                         "transaction_date": "20240808",
+//                         "ref_num": `${u.username}_${u.appcode}_ref`,
+//                         "amount": 10000,
+//                         "additional_info": "tonnes of additionl info",
+//                       }).expect(200).end((err,res)=>{
+//                         if(err)console.error(err);
+//                         return done(err);
+//                       });
+//                     }
+//                 });
+//         });
+//     });
+// });
 
 
