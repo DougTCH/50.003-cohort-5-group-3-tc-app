@@ -11,6 +11,9 @@ const schedule = require('node-schedule');
 const params = require("./config_helper.js").get_app_config(true);
 const port =  params["network"].port||3000;
 const submit_accrual_job = require('./jobs/submitaccrual.js');
+const cors = require('cors');
+app.use(cors());
+
 
 const rule_submit = new schedule.RecurrenceRule();
 rule_submit.hour = 1; //1 am recurrence
@@ -22,12 +25,13 @@ const job_s = schedule.scheduleJob(rule_submit, function(){
   submit_accrual_job();
 });
 
-// const job_a = schedule.scheduleJob(rule_acquire, function(){
-//   require('./jobs/gethandback.js').get_handback_job();
-// });
-const cors = require('cors');
-app.use(cors());
 
+// required for push notif
+const dotenv = require('dotenv');
+dotenv.config();
+
+const subscriptionsService = require('./models/subscription.js');
+subscriptionsService.createTable();
 
 schema();
 
@@ -37,6 +41,7 @@ app.use("/transact",require("./routes/transact"));
 app.use("/auth",require("./routes/auth"));
 app.use("/b2b",require("./routes/b2b"));
 app.use("/info",require("./routes/info"));
+app.use("/push",require("./routes/notif"));
 app.get('/', (req, res) => {
   res.status(401).send("API");
 });
