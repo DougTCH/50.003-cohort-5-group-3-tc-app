@@ -65,7 +65,7 @@ class TransactionRecord {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
     getAccrualRow(idx){
-        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.ref_num,this.app_id];
+        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.t_id,this.app_id];
     }
 
     static getAllRecordsByUserId(user_id, callback) {
@@ -114,9 +114,7 @@ class TransactionRecord {
     }
     static getRecordByReferenceNumber(ref_num, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE ref_num = ?`;
-        console.log('test1');
         db.get(sql, [ref_num], (err, row) => {
-            console.log('entered');
             if (err) {
                 console.error('Error fetching record by reference number:', err);
                 return callback(err);

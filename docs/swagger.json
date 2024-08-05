@@ -821,6 +821,32 @@
           }
         }
       }
+    },
+    "/push/notify/{ref_num}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "ref_num",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {

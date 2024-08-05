@@ -18,7 +18,8 @@ dotenv.config();
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 webpush.setVapidDetails('mailto:your-email@example.com', publicVapidKey, privateVapidKey);
-
+const transactions = require('../models/transactions.js');
+const subscriptionsService = require('../models/subscription.js');
 class Handback{
      
      constructor(dto){
@@ -51,45 +52,7 @@ class Handback{
           return "transfer_date,amount,reference_number,outcome_code\n";
      }
 }
-function notify_record(subscription, payload) {
-     webpush.sendNotification(subscription, payload).catch(error => {
-         console.error('Error sending notification:', error);
-         if (error.statusCode === 410 || error.statusCode === 404) {
-             Subscription.removeSubscriptionByRefNum(subscription.ref_num, err => {
-                 if (err) {
-                     console.error('Error removing subscription:', err);
-                 }
-             });
-         }
-     });
- }
-async function processTransactions(t_recs, hbfs) {
-    for (let hbf of hbfs) {
-        if (t_recs.has(hbf.ref_uuid)) {
-            let tt = t_recs.get(hbf.ref_uuid);
-            tt.status = hbf.outcome;
-            db.run(`UPDATE ${tblname} SET status = '${tt.status}' WHERE t_id = '${tt.t_id}';`, [], async (err) => {
-                if (err) console.error(err);
 
-                // Fetch the corresponding subscription and send notification
-                Subscription.getSubscriptionByRefNum(tt.ref_num, (err, subscription) => {
-                    if (err) {
-                        console.error('Error fetching subscription:', err);
-                        return;
-                    }
-                    if (subscription) {
-                        const payload = JSON.stringify({
-                            title: 'Transaction Status',
-                            body: `Transaction ${tt.ref_num} ${tt.status}`
-                        });
-                        notify_record(subscription, payload);
-                    }
-                });
-            });
-        }
-    }
-    console.log("Complete processTransactions in DB");
-}
 function update_rows(transactionRecords){
      for(r of transactionRecords){
           db.run(r.updateSQL(),(err,res)=>{
@@ -131,11 +94,12 @@ async function get_handback_job(){
      }
      console.error("COUNT: " + c);
 
-     TransactionRecord.getAllRecordByStatus('pending',(err,rows)=>{
+     TransactionRecord.getAllRecordByStatus("= 'pending'",(err,rows)=>{
           if(err){
                console.error(err);
                return;
           }
+          //console.log(rows);
           var rObj = rows.map(row=>new TransactionRecord(row));
           for(o of rObj){
                //console.log("id: " + o.t_id);
@@ -147,12 +111,16 @@ async function get_handback_job(){
                     let tt = t_recs.get(hbf.ref_uuid);
                     tt.status = hbf.outcome;
                     //console.log(tt.updateSQL());
+                    console.log(tt.t_id + " " + tt.status);
+                    //transactions.update_transaction_record(tt.t_id, tt.status);
                     db.run(`UPDATE ${tblname}
                          SET status = '${tt.status}'
                          WHERE t_id = '${tt.t_id}';`,[],(err,res)=>{
                          if(err)console.error(err);
                          return;
                     });
+                    const refnum = tt.ref_num;
+                    
                }
           }
           
@@ -164,9 +132,9 @@ async function get_handback_job(){
      // }).then(()=>{
      //      connect_wrapper(t_recs,update_rows);
      // });
-     await processTransactions(t_recs, hbfs);
      console.log("Complete get_handback_job");
 }
+
 
 
 module.exports = get_handback_job;

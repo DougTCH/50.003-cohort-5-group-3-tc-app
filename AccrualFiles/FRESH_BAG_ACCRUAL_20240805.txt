@@ -1,8 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user2_m_id,Jane,Smith,20240808,10000,004ab6200d024bd1afa8e737480f2b27,CITY_BANK
-2,user6_m_id,David,Williams,20240808,10000,ef69daea20b04a01ad5e1fb82bd91ce9,NATIONAL_BANKING
-3,user8_m_id,Frank,Garcia,20240808,10000,57bc072b47e24ae1acf4711df833eeb8,ROYAL_FINANCE
-4,user15_m_id,Mia,Harris,20240808,10000,34d2723757594578b487731ccc086225,GLOBAL_TRUST
-5,user22_m_id,Tina,Roberts,20240808,10000,a2e56304a7eb4583828d8dd26dfaeeeb,CITY_BANK
-6,user26_m_id,Xander,Scott,20240808,10000,24c9076d9b4a430888e17e78797d4a8d,NATIONAL_BANKING
-7,user28_m_id,Zane,Adams,20240808,10000,ad6a10aeb2ba4c48827384b74098e40d,ROYAL_FINANCE

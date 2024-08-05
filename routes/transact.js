@@ -231,7 +231,6 @@ router.get('/obtain_record/By_member_id/processed', AuthMiddleware.verifyToken, 
 });
 router.get('/obtain_record/by_ref_num/:ref_num', AuthMiddleware.verifyToken, (req, res) => {
     var ref_num = req.params.ref_num;
-    console.log("asdasdsdasd");
     if (!ref_num) {
         return res.status(400).json({ error: 'reference number is required' });
     }

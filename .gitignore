@@ -1,8 +1,10 @@
+# Secret
 *secret*
 *key*
 */secret
 */*.csv
 *.csv
+
 # Logs
 logs
 *.log
@@ -12,6 +14,7 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 /.vscodes
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -134,3 +137,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .vscode/settings.json
+
+# Custom entry
+tc.db

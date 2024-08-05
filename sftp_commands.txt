@@ -1,0 +1,4 @@
+cd sutd_project_2024/c5g3/Handback
+lcd HandBackFiles
+put *
+bye
