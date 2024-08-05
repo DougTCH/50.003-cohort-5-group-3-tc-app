@@ -1,0 +1,2 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,user19_m_id,Quinn,Carter,20240808,10000,f440184a757446e3be20108451b3fea6,KINGSMAN_BANK

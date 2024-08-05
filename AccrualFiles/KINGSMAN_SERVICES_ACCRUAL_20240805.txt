@@ -1,3 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user10_m_id,Hank,Moore,20240808,10000,aa3318cebad74755beb343280066f5c4,GLOBAL_TRUST
-2,user10_m_id,Hank,Moore,20240808,10000,28348cf8ce1e48a8abf961d091fa95fb,GLOBAL_TRUST

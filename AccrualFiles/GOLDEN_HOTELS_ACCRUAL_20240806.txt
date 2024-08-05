@@ -1,0 +1,2 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,user16_m_id,Nate,Lopez,20240808,10000,467ad3842a40485281e24550c68ac00a,NATIONAL_BANKING

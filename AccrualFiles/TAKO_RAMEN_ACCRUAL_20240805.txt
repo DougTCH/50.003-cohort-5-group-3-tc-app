@@ -1,5 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user5_m_id,Charlie,Lee,20240808,10000,2478a1df2aca4d6c9776a462bcb05abf,GLOBAL_TRUST
-2,user25_m_id,Wendy,King,20240808,10000,31007ff1e673429a9612338f427fa044,GLOBAL_TRUST
-3,user5_m_id,Charlie,Lee,20240808,10000,401b39151ec94892ab9a23e943ac75ab,GLOBAL_TRUST
-4,user25_m_id,Wendy,King,20240808,10000,c556045eef7b49cab5f7e065e7f880d2,GLOBAL_TRUST

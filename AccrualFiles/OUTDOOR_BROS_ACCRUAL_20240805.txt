@@ -1,3 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user12_m_id,Jack,Thomas,20240808,10000,21cacd7ff7be49fbb103914e81589d51,CITY_BANK
-2,user12_m_id,Jack,Thomas,20240808,10000,f5b52426d38043c5a149e2543e564af8,CITY_BANK

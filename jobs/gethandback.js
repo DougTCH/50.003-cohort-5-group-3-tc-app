@@ -20,6 +20,8 @@ const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 webpush.setVapidDetails('mailto:your-email@example.com', publicVapidKey, privateVapidKey);
 const transactions = require('../models/transactions.js');
 const subscriptionsService = require('../models/subscription.js');
+const Mailer = require("../services/mailer.js");
+
 class Handback{
      
      constructor(dto){
@@ -127,6 +129,10 @@ async function get_handback_job(){
                               console.log('Notification sent', result);
                          }
                      });
+                    var secondary_notif = JSON.parse(tt.additional_info);
+                    if("email" in secondary_notif){
+                         Mailer.sendMailNotif(Mailer.createMailOptions(secondary_notif['email'],tt));
+                    }
                }
           }
           
