@@ -1,3 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user11_m_id,Ivy,Taylor,20240808,10000,0192d9f35eec4acc8c13e19a701fde72,NATIONAL_BANKING
-2,user18_m_id,Paul,Nelson,20240808,10000,d964f327cda24734a9dce05c57318126,ROYAL_FINANCE

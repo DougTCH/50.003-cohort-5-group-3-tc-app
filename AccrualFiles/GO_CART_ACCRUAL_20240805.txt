@@ -1,2 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user9_m_id,Grace,Anderson,20240808,10000,c2e1a86966cc4e5e9199686b5815ee63,KINGSMAN_BANK

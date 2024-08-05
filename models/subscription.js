@@ -1,5 +1,6 @@
 const db = require('../services/db_adaptor.js');
 const tblname = 'subscriptions';
+const webpush = require('web-push');
 
 class Subscription {
     constructor(sqlrow) {
@@ -53,9 +54,39 @@ class Subscription {
             }
         });
     }
-}
+};
 
-module.exports = { 
-    Subscription, 
-    createTable: Subscription.createTable
+const sendNotification = (ref_num, callback) => {
+    Subscription.getSubscriptionByRefNum(ref_num, (err, subscription) => {
+        if (err) {
+            return callback({ status: 500, error: 'Database error' });
+        }
+        if (!subscription) {
+            return callback({ status: 404, error: 'Subscription not found' });
+        }
+
+        const payload = JSON.stringify({
+            title: 'Push Notification Title',
+            body: 'This is the body of the push notification',
+            icon: 'path/to/icon.png'
+        });
+
+        const pushSubscription = {
+            endpoint: subscription.endpoint,
+            keys: {
+                p256dh: subscription.p256dh,
+                auth: subscription.auth
+            }
+        };
+
+        webpush.sendNotification(pushSubscription, payload)
+            .then(result => callback(null, { status: 200, message: 'Notification sent', result }))
+            .catch(err => callback({ status: 500, error: 'Failed to send notification', details: err }));
+    });
+};
+
+module.exports = {
+    Subscription,
+    createTable: Subscription.createTable,
+    sendNotification
 };

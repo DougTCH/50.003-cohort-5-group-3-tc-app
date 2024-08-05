@@ -3,6 +3,7 @@ const LoyaltyPrograms = require('./loyalty.js');
 const db = require('../services/db_adaptor.js');
 const TransactionRecord = require('./transactions.js');
 const BankAppModel = require('./bank.js');
+const subscriptionTable = require('./subscription.js');
 
 async function build_schema(){
     db.serialize(()=>{
@@ -10,6 +11,7 @@ async function build_schema(){
         db.run(LoyaltyPrograms.createTable());
         db.run(TransactionRecord.createTable());
         db.run(BankAppModel.BankAppInfo.createTable());
+        db.run(subscriptionTable.createTable());
     });
 }
 
