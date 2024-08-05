@@ -77,7 +77,7 @@ def call_gen_acc():
     print("Gen Acc Response:", response.json())
     return response.json()
 
-def run_tools():
+def run_tools1():
     users = []
     toks = {}
     with open("users.json") as u:
@@ -108,6 +108,8 @@ def run_tools():
         _t = json.loads(res.text)
         if(res.status_code!=200):
             print(f"{u['username']} payload transact fail - {res.status_code}")
+    
+def run_tools2():
     listing = glob.glob('../AccrualFiles/*')
     for l in listing:
         hbs = "transfer_date,amount,reference_number,outcome_code\n" 
@@ -119,6 +121,8 @@ def run_tools():
 
         with open(f"../HandBackFiles/{l[16::].replace('ACCRUAL','HANDBACK')}",'w+') as ff:
             ff.write(hbs)
+
+
 
 def send_to_sftp():
     batch_file_path = os.path.join(os.path.dirname(__file__), '..', 'upload_files.bat')
@@ -162,16 +166,20 @@ if __name__ == "__main__":
         print("Cleaning handback folder")
         empty_handback_folder()
         time.sleep(0.5)
+        print("run tools 1")
+        run_tools1()
+        time.sleep(0.5)
         print("Calling gen_acc")
         call_gen_acc()
         time.sleep(0.5)
         print("Running tools to gen hbf")
-        run_tools()
+        run_tools2()
         time.sleep(0.5)
         print("Sending files to SFTP")
         send_to_sftp()
-        print("Waiting 60 seconds for SFTP server")
-        time.sleep(60)
+        print("Waiting 15 seconds for SFTP server")
+        time.sleep(15)
         print("Calling gen_hbf")
         call_gen_hbf()
         print("=====E2E Test Completed=====")
+
