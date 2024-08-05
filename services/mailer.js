@@ -18,7 +18,7 @@ return {
   from: user_,
   to: dest_addr,
   subject: `TransferConnect transaction result:${tr.ref_num}`,
-  text: `Transaction initiated from ${tr.app_id} for ${tr.loyalty_id}, amount: ${tr.amount}, resulted in status code: ${tr.status}. Do not reply.`
+  text: `Transaction initiated from ${tr.app_id} for ${tr.loyalty_pid}, amount: ${tr.amount}, resulted in status code: ${tr.status}. Do not reply.`
 };
 }
 function sendMailNotif(mailOptions){
