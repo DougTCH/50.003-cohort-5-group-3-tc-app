@@ -23,5 +23,10 @@
       "pid": "GLOBAL_BANK",
       "name": "Global Bank",
       "valid_lp": ["GOLDEN_HOTELS", "FRESH_BAG", "TAKO_RAMEN", "HIS_AND_HERS"]
+    },
+    {
+      "pid": "FETCH",
+      "name": "Fetch_Bark_Bank",
+      "valid_lp": ["BEST_MOVERS,FRESH_BAG,GOLDEN_HOTELS,HIS_AND_HERS,KINGSMAN_SERVICES,NATIONAL_BANKING,PASSION_PAY,ROYAL_AIR,TAKO_RAMEN,OUTDOOR_BROS,SUSHI_CHOPSTICKS,JOYSPRING_TOYS,GO_CART"]
     }
 ]
