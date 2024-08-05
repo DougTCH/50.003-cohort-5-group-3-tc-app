@@ -13,12 +13,18 @@ async function submit_accrual_job(){
           var progs = {}
           //console.error(rows);
           for(var r of rows){
+               if(r.pid){
                progs[r.pid] = {program:new LoyaltyPrograms.InfoObject(r),arr:[['index','Member ID','Member first name','Member last name','Transfer date','Amount','Reference number','Partner code']]}; 
+               }
           }
           db.all(`SELECT * FROM ${tblname} WHERE status = "pending"`, async (err,innerrows)=>{
-               if(err)throw err;
+               if(err)console.log(err);
                for(var ir of innerrows){
                     if(!(ir.loyalty_pid in progs)){
+                         console.error(ir.loyalty_pid);
+                         // let tp = new TransactionRecord(ir);
+                         // tp.status = "invalid";
+                         // db.run(tp.updateSQL());
                          continue;
                     }
                     progs[ir.loyalty_pid].arr.push(new TransactionRecord(ir));

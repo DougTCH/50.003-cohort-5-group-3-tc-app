@@ -45,7 +45,7 @@
       "appcode": "NATIONAL_BANKING",
       "member_first": "David",
       "member_last": "Williams",
-      "valid_lp": ["PALM_CRUISE", "GENTLEMEN_GOLF", "THE_NATURE_TREE"]
+      "valid_lp": ["FRESH_BAG"]
     },
     {
       "username": "user7",
@@ -61,7 +61,7 @@
       "appcode": "ROYAL_FINANCE",
       "member_first": "Frank",
       "member_last": "Garcia",
-      "valid_lp": ["CITY_GREEN", "FAST_FRUITS", "FRESH_BAG"]
+      "valid_lp": [ "FRESH_BAG"]
     },
     {
       "username": "user9",
@@ -85,7 +85,7 @@
       "appcode": "NATIONAL_BANKING",
       "member_first": "Ivy",
       "member_last": "Taylor",
-      "valid_lp": ["PREMIUM_STEAKHOUSE", "ROYAL_AIR", "TAKO_RAMEN"]
+      "valid_lp": ["ROYAL_AIR", "TAKO_RAMEN"]
     },
     {
       "username": "user12",
@@ -101,7 +101,7 @@
       "appcode": "ROYAL_FINANCE",
       "member_first": "Kathy",
       "member_last": "Jackson",
-      "valid_lp": ["GENTLEMEN_GOLF", "THE_NATURE_TREE", "JOYSPRING_TOYS"]
+      "valid_lp": ["THE_NATURE_TREE", "JOYSPRING_TOYS"]
     },
     {
       "username": "user14",
@@ -109,7 +109,7 @@
       "appcode": "KINGSMAN_BANK",
       "member_first": "Leo",
       "member_last": "White",
-      "valid_lp": ["PETS_HOUSE", "BEST_MOVERS", "CITY_GREEN"]
+      "valid_lp": ["BEST_MOVERS", "CITY_GREEN"]
     },
     {
       "username": "user15",
@@ -117,7 +117,7 @@
       "appcode": "GLOBAL_TRUST",
       "member_first": "Mia",
       "member_last": "Harris",
-      "valid_lp": ["FAST_FRUITS", "FRESH_BAG", "GO_CART"]
+      "valid_lp": [ "FRESH_BAG", "GO_CART"]
     },
     {
       "username": "user16",
@@ -157,7 +157,7 @@
       "appcode": "GLOBAL_TRUST",
       "member_first": "Rose",
       "member_last": "Mitchell",
-      "valid_lp": ["THE_NATURE_TREE", "JOYSPRING_TOYS", "PETS_HOUSE"]
+      "valid_lp": ["JOYSPRING_TOYS", "PETS_HOUSE"]
     },
     {
       "username": "user21",
@@ -205,7 +205,7 @@
       "appcode": "NATIONAL_BANKING",
       "member_first": "Xander",
       "member_last": "Scott",
-      "valid_lp": ["PALM_CRUISE", "GENTLEMEN_GOLF", "THE_NATURE_TREE"]
+      "valid_lp": ["FRESH_BAG"]
     },
     {
       "username": "user27",
@@ -221,6 +221,6 @@
       "appcode": "ROYAL_FINANCE",
       "member_first": "Zane",
       "member_last": "Adams",
-      "valid_lp": ["CITY_GREEN", "FAST_FRUITS", "FRESH_BAG"]
+      "valid_lp": [ "FRESH_BAG"]
     }
 ]

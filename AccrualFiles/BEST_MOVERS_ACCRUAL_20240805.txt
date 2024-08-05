@@ -1,0 +1,4 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,user1_m_id,John,Doe,20240808,10000,7be916198f31494ea110b276239397b8,NATIONAL_BANKING
+2,user14_m_id,Leo,White,20240808,10000,32a38ad2e986406caebd2fa15e1cfe48,KINGSMAN_BANK
+3,user21_m_id,Sam,Perez,20240808,10000,e8212771fffa4b6b90a91f78e27a6d9f,NATIONAL_BANKING

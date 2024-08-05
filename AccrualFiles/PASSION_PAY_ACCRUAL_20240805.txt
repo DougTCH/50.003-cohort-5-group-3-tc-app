@@ -1,0 +1,4 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,user4_m_id,Bob,Johnson,20240808,10000,09d19a1bce4f4a2eb602ced69b0397cd,KINGSMAN_BANK
+2,user17_m_id,Olivia,Gonzalez,20240808,10000,131f1e463a22453a9a20f667b0ffc808,CITY_BANK
+3,user24_m_id,Vince,Young,20240808,10000,60c279378bf34452a2526ed1affeff2f,KINGSMAN_BANK
