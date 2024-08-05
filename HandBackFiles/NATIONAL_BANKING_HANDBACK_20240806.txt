@@ -1,1 +1,0 @@
-transfer_date,amount,reference_number,outcome_code
