@@ -1,0 +1,2 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,user1_m_id,John,Doe,20240809,1111,3af174ad37b64280963093c96ca3d6c0,NATIONAL_BANKING
