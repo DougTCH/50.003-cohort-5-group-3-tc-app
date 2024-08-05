@@ -30,7 +30,7 @@ const job_s = schedule.scheduleJob(rule_submit, function(){
 
 const rule_ret = new schedule.RecurrenceRule();
 rule_ret.hour = 3; //1 am recurrence
-rule_submit.minute = 0;
+rule_ret.minute = 0;
 // const rule_acquire = new schedule.RecurrenceRule();
 // rule_acquire.hour = 3; //1 am recurrence
 
