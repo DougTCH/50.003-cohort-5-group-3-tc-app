@@ -139,4 +139,6 @@ dist
 .vscode/settings.json
 
 # Custom entry
+AccuralFiles
+HandBackFiles
 tc.db

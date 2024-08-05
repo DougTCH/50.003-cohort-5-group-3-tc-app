@@ -1,3 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user3_m_id,Alice,Brown,20240808,10000,703e23f66c80490cbb48b3a7114c1ec9,ROYAL_FINANCE
-2,user23_m_id,Uma,Walker,20240808,10000,5da2fa07739c4b0bb9a748cff4b14a43,ROYAL_FINANCE

@@ -1,4 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user7_m_id,Eve,Martinez,20240808,10000,9197834063a9421ba291a1964cfd9bce,CITY_BANK
-2,user20_m_id,Rose,Mitchell,20240808,10000,cbb83ba20ca74d9b925d83c26a160f62,GLOBAL_TRUST
-3,user27_m_id,Yara,Torres,20240808,10000,b267a6d769eb4c2abac15a22d1a6f252,CITY_BANK
