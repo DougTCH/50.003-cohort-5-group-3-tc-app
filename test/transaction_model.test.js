@@ -58,7 +58,7 @@ describe("Transaction Records Unit Tests", ()=>{
             "member_first":"John",
             "member_last":"Does",
             "transaction_date":"20243108",
-            "amount":-1000000,
+            "amount":1000000,
             "status":"pending",
             "additional_info":"Hello Hello additional info"
         });
@@ -70,6 +70,7 @@ describe("Transaction Records Unit Tests", ()=>{
             "loyalty_pid":"JOYSPRING_TOYS",
             "user_id":"01238771jb2v1723",
             "transaction_date":"20240808",
+            "ref_num":"000000001",
             "amount":1000000,
             "status":"pending",
             "additional_info":"Hello Hello additional info"

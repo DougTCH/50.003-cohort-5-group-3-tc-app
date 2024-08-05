@@ -130,7 +130,7 @@ class TransactionRecord {
     }
 
     static checkValidity(transactionData,callback){
-        if (!/^\d{8}$/.test(transactionData.transaction_date)) {
+        if (!isValidDate(transactionData.transaction_date)) {
             callback(new Error('Invalid transaction_date format. It should be YYYYMMDD.'));
             return false;
         }
@@ -138,7 +138,7 @@ class TransactionRecord {
             callback(new Error('ref_num is required.'));
             return false;
         }
-        if (transactionData.amount<=0) {
+        if (transactionData.amount<=0||isNaN(transactionData.amount)) {
             callback(new Error('Transaction amount is invalid.'));
             return false;
         }
@@ -267,7 +267,36 @@ class TransactionRecord {
         });
     }
 }
+function isValidDate(dateString) {
+    // Check if the date string matches the format YYYYMMDD
+    if (!/^\d{8}$/.test(dateString)) {
+        return false;
+    }
 
+    // Extract year, month, and day from the date string
+    const year = parseInt(dateString.substring(0, 4), 10);
+    const month = parseInt(dateString.substring(4, 6), 10);
+    const day = parseInt(dateString.substring(6, 8), 10);
+
+    // Check if month is valid
+    if (month < 1 || month > 12) {
+        return false;
+    }
+
+    // Check if day is valid based on the month and year
+    const daysInMonth = [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (day < 1 || day > daysInMonth[month - 1]) {
+        return false;
+    }
+
+    return true;
+}
+
+function isLeapYear(year) {
+    // Leap year logic
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
 function createTable() {
     return TransactionRecord.createTable();
 }

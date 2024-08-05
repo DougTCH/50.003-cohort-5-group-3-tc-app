@@ -92,7 +92,7 @@ async function get_handback_job(){
                hbfs.push(new Handback(hbr));
           }
      }
-     console.error("COUNT: " + c);
+     //console.error("COUNT: " + c);
 
      TransactionRecord.getAllRecordByStatus("= 'pending'",(err,rows)=>{
           if(err){
@@ -127,7 +127,6 @@ async function get_handback_job(){
                               console.log('Notification sent', result);
                          }
                      });
-
                }
           }
           
