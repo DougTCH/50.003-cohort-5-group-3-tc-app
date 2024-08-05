@@ -20,7 +20,7 @@ const PushNotifications = require("node-pushnotifications");
 
 const rule_submit = new schedule.RecurrenceRule();
 rule_submit.hour = 1; //1 am recurrence
-
+rule_submit.minute = 0;
 // const rule_acquire = new schedule.RecurrenceRule();
 // rule_acquire.hour = 3; //1 am recurrence
 
@@ -28,12 +28,22 @@ const job_s = schedule.scheduleJob(rule_submit, function(){
   submit_accrual_job();
 });
 
+const rule_ret = new schedule.RecurrenceRule();
+rule_ret.hour = 3; //1 am recurrence
+rule_submit.minute = 0;
+// const rule_acquire = new schedule.RecurrenceRule();
+// rule_acquire.hour = 3; //1 am recurrence
+
+const job_r = schedule.scheduleJob(rule_ret, function(){
+  get_handback_job();
+});
 
 // required for push notif
 const dotenv = require('dotenv');
 dotenv.config();
 
 const subscriptionsService = require('./models/subscription.js');
+const get_handback_job = require('./jobs/gethandback.js');
 subscriptionsService.createTable();
 
 schema();
@@ -50,7 +60,7 @@ app.get('/', (req, res) => {
 });
 
 const server = app.listen(port, () => {
-  //console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
 
 async function closeconnections(){
