@@ -5,6 +5,7 @@ const submit_accrual_job = require('../jobs/submitaccrual.js');
 const get_handback_job = require('../jobs/gethandback.js');
 const router = express.Router();
 
+
 router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, res) => {
     try {
         const user_id = req.query.user_id;
@@ -29,19 +30,18 @@ router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, re
     }
 });
 router.get('/obtain_records/pending_last', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getLastStatusRecord('pending', (err, record) => {
+    TransactionRecord.getLastStatusRecord("= 'pending'", (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/pending:', err);
+            console.error('Error in /obtain_records/pending_last:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
     });
 });
-
 router.get('/obtain_records/processed_last', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getLastStatusRecord('complete', (err, record) => {
+    TransactionRecord.getLastStatusRecord("<> 'pending'", (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/processed:', err);
+            console.error('Error in /obtain_records/processed_last:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
@@ -49,7 +49,7 @@ router.get('/obtain_records/processed_last', AuthMiddleware.verifyToken, (req, r
 });
 
 router.get('/obtain_record/processed_all', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getAllRecordByStatus('processed', (err, records) => {
+    TransactionRecord.getAllRecordByStatus("!='pending'", (err, records) => {
         if (err) {
             console.error('Error in /obtain_record/processed_all:', err);
             return res.status(500).json({ error: 'Something went wrong' });
@@ -59,7 +59,7 @@ router.get('/obtain_record/processed_all', AuthMiddleware.verifyToken, (req, res
 });
 
 router.get('/obtain_record/pending_all', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getAllRecordByStatus('pending', (err, records) => {
+    TransactionRecord.getAllRecordByStatus("= 'pending'", (err, records) => {
         if (err) {
             console.error('Error in /obtain_record/pending_all:', err);
             return res.status(500).json({ error: 'Something went wrong' });
@@ -83,10 +83,41 @@ router.get('/obtain_record/:t_id', AuthMiddleware.verifyToken, (req, res) => {
     });
 });
 
+function isValidDate(dateString) {
+    // Check if the date string matches the format YYYYMMDD
+    if (!/^\d{8}$/.test(dateString)) {
+        return false;
+    }
+
+    // Extract year, month, and day from the date string
+    const year = parseInt(dateString.substring(0, 4), 10);
+    const month = parseInt(dateString.substring(4, 6), 10);
+    const day = parseInt(dateString.substring(6, 8), 10);
+
+    // Check if month is valid
+    if (month < 1 || month > 12) {
+        return false;
+    }
+
+    // Check if day is valid based on the month and year
+    const daysInMonth = [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (day < 1 || day > daysInMonth[month - 1]) {
+        return false;
+    }
+
+    return true;
+}
+
+function isLeapYear(year) {
+    // Leap year logic
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
 router.post('/add_record', AuthMiddleware.verifyToken, (req, res) => {
     const { app_id, loyalty_pid, user_id, member_id, member_first,member_last, transaction_date, ref_num, amount, additional_info } = req.body;
-    if (!/^\d{8}$/.test(transaction_date)) {
-        return res.status(400).json({ error: 'Invalid transaction_date format. It should be DDMMYYYY.' });
+    if (!isValidDate(transaction_date)) {
+        return res.status(400).json({ error: 'Invalid transaction_date format. It should be YYYYMMDD.' });
     }
     if (isNaN(amount)) {
         return res.status(400).json({ error: 'Invalid amount. It should be a number.' });

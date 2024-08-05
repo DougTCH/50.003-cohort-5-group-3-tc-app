@@ -46,18 +46,18 @@ class TransactionRecord {
 
     updateSQL() {
         return `UPDATE ${tblname}
-            SET app_id = ${this.app_id},
-                loyalty_pid = ${this.loyalty_pid},
-                user_id = ${this.user_id},
-                member_id = ${this.member_id},
-                member_first = ${this.member_first},
-                member_last = ${this.member_last},
-                transaction_date = ${this.transaction_date},
-                amount = ${this.amount},
-                status = ${this.status},
-                additional_info = ${this.additional_info}
+            SET app_id = ?,
+                loyalty_pid = ?,
+                user_id = ?,
+                member_id = ?,
+                member_first = ?,
+                member_last = ?,
+                transaction_date = ?,
+                amount = ?,
+                status = ?,
+                additional_info = ?
             WHERE 
-                ref_num =${this.t_id};`;
+                ref_num = ?;`;
     }
 
     insertSQL() {
@@ -65,7 +65,7 @@ class TransactionRecord {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     }
     getAccrualRow(idx){
-        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.t_id,this.app_id];
+        return [idx,this.member_id,this.member_first,this.member_last,this.transaction_date,this.amount,this.ref_num,this.app_id];
     }
 
     static getAllRecordsByUserId(user_id, callback) {
@@ -84,11 +84,11 @@ class TransactionRecord {
     }
     
 
-    static getLastStatusRecord(status, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date DESC LIMIT 1`;
-        db.get(sql, [status], (err, row) => {
+    static getLastStatusRecord(statusCondition, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE status ${statusCondition} ORDER BY transaction_date DESC LIMIT 1`;
+        db.get(sql, [], (err, row) => {
             if (err) {
-                console.error(`Error fetching last record with status ${status}:`, err);
+                console.error(`Error fetching last record with status condition ${statusCondition}:`, err);
                 return callback(err);
             }
             if (row) {
@@ -98,7 +98,6 @@ class TransactionRecord {
             }
         });
     }
-
     static getRecordById(t_id, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE t_id = ?`;
         db.get(sql, [t_id], (err, row) => {
@@ -154,8 +153,8 @@ class TransactionRecord {
             return false;
         }
         //Check against bank app valid lp
-        //console.log(`Hello inserting for ${transactionData.user_id}`);
         const transaction = new TransactionRecord(transactionData);
+
         const sql = transaction.insertSQL();
         //console.log('Executing SQL:', sql);
         db.run(sql, [
@@ -237,11 +236,11 @@ class TransactionRecord {
             callback(null, rows);
         });
     }
-    static getAllRecordByStatus(status, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
-        db.all(sql, [status], (err, rows) => {
+    static getAllRecordByStatus(statusCondition, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE status ${statusCondition} ORDER BY transaction_date ASC`;
+        db.all(sql, [], (err, rows) => {
             if (err) {
-                console.error(`Error fetching all records with status ${status}:`, err);
+                console.error(`Error fetching all records with status condition ${statusCondition}:`, err);
                 return callback(err);
             }
             callback(null, rows.map(row => new TransactionRecord(row)));
@@ -285,7 +284,19 @@ async function update_transaction_record(dto, success, fail) {
                 return fail(err);
             }
             db.serialize(() => {
-                db.run(new TransactionRecord(dto).updateSQL(),[], (err) => {
+                db.run(new TransactionRecord(dto).updateSQL(), [
+                    dto.app_id,
+                    dto.loyalty_pid,
+                    dto.user_id,
+                    dto.member_id,
+                    dto.member_first,
+                    dto.member_last,
+                    dto.transaction_date,
+                    dto.amount,
+                    dto.status,
+                    dto.additional_info,
+                    dto.ref_num
+                ], (err) => {
                     if (err) {
                         console.error('Error updating transaction:', err);
                         return fail(err);
