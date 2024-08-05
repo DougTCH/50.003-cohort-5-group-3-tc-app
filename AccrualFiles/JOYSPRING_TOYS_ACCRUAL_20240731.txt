@@ -1,2 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user20_m_id,Rose,Mitchell,20240808,10000,a3968bc9a8814e38ae0f980e27790521,GLOBAL_TRUST

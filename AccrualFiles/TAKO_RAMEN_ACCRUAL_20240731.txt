@@ -1,2 +1,0 @@
-index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,user18_m_id,Paul,Nelson,20240808,10000,31c87329fcf843c28f6acd48a2fe4a27,ROYAL_FINANCE

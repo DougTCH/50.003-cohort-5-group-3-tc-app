@@ -7,7 +7,6 @@ const LoyaltyPrograms = require('../models/loyalty.js');
 router.post('/loyalty/update', AuthMiddleware.verifyB2BToken, (req, res) => {
     const {
         pid,
-        userid,
         name,
         currency,
         process_time,
