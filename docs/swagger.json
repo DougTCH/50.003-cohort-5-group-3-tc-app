@@ -822,7 +822,7 @@
         }
       }
     },
-    "/push/notify/{ref_num}": {
+    "/push/notify/{ref_num}/{status}": {
       "post": {
         "description": "",
         "parameters": [
@@ -833,17 +833,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "default": {
+            "description": ""
           }
         }
       }

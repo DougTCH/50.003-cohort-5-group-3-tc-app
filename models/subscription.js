@@ -56,7 +56,7 @@ class Subscription {
     }
 };
 
-const sendNotification = (ref_num, callback) => {
+const sendNotification = (ref_num, status, callback) => {
     Subscription.getSubscriptionByRefNum(ref_num, (err, subscription) => {
         if (err) {
             return callback({ status: 500, error: 'Database error' });
@@ -66,8 +66,8 @@ const sendNotification = (ref_num, callback) => {
         }
 
         const payload = JSON.stringify({
-            title: 'Push Notification Title',
-            body: 'This is the body of the push notification',
+            title: 'Transaction has been processed',
+            body: status,
             icon: 'path/to/icon.png'
         });
 
@@ -84,7 +84,6 @@ const sendNotification = (ref_num, callback) => {
             .catch(err => callback({ status: 500, error: 'Failed to send notification', details: err }));
     });
 };
-
 module.exports = {
     Subscription,
     createTable: Subscription.createTable,

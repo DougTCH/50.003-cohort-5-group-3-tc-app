@@ -119,8 +119,15 @@ async function get_handback_job(){
                          if(err)console.error(err);
                          return;
                     });
-                    const refnum = tt.ref_num;
-                    
+                    subscriptionsService.sendNotification(tt.ref_num, tt, (err, result) => {
+                         if (err) {
+                              console.error('Failed to send notification', err);
+                         }
+                         else {
+                              console.log('Notification sent', result);
+                         }
+                     });
+
                }
           }
           

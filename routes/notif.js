@@ -53,10 +53,11 @@ router.get('/subscribe/:ref_num', (req, res) => {
 });
 
 // Endpoint to send push notification
-router.post('/notify/:ref_num', (req, res) => {
+router.post('/notify/:ref_num/:status', (req, res) => {
     const ref_num = req.params.ref_num;
+    const status = req.params.status;
 
-    subscriptionsService.sendNotification(ref_num, (err, result) => {
+    subscriptionsService.sendNotification(ref_num, status, (err, result) => {
         if (err) {
             return res.status(err.status).json(err);
         }
