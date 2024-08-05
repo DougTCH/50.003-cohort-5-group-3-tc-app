@@ -29,19 +29,18 @@ router.get('/obtain_record/byUserId', AuthMiddleware.verifyToken, async (req, re
     }
 });
 router.get('/obtain_records/pending_last', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getLastStatusRecord('pending', (err, record) => {
+    TransactionRecord.getLastStatusRecord("= 'pending'", (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/pending:', err);
+            console.error('Error in /obtain_records/pending_last:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
     });
 });
-
 router.get('/obtain_records/processed_last', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getLastStatusRecord('complete', (err, record) => {
+    TransactionRecord.getLastStatusRecord("<> 'pending'", (err, record) => {
         if (err) {
-            console.error('Error in /obtain_records/processed:', err);
+            console.error('Error in /obtain_records/processed_last:', err);
             return res.status(500).json({ error: 'Something went wrong' });
         }
         res.json(record);
@@ -49,7 +48,7 @@ router.get('/obtain_records/processed_last', AuthMiddleware.verifyToken, (req, r
 });
 
 router.get('/obtain_record/processed_all', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getAllRecordByStatus('processed', (err, records) => {
+    TransactionRecord.getAllRecordByStatus("!='pending'", (err, records) => {
         if (err) {
             console.error('Error in /obtain_record/processed_all:', err);
             return res.status(500).json({ error: 'Something went wrong' });
@@ -59,7 +58,7 @@ router.get('/obtain_record/processed_all', AuthMiddleware.verifyToken, (req, res
 });
 
 router.get('/obtain_record/pending_all', AuthMiddleware.verifyToken, (req, res) => {
-    TransactionRecord.getAllRecordByStatus('pending', (err, records) => {
+    TransactionRecord.getAllRecordByStatus("= 'pending'", (err, records) => {
         if (err) {
             console.error('Error in /obtain_record/pending_all:', err);
             return res.status(500).json({ error: 'Something went wrong' });

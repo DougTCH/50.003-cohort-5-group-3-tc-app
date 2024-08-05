@@ -84,11 +84,11 @@ class TransactionRecord {
     }
     
 
-    static getLastStatusRecord(status, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date DESC LIMIT 1`;
-        db.get(sql, [status], (err, row) => {
+    static getLastStatusRecord(statusCondition, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE status ${statusCondition} ORDER BY transaction_date DESC LIMIT 1`;
+        db.get(sql, [], (err, row) => {
             if (err) {
-                console.error(`Error fetching last record with status ${status}:`, err);
+                console.error(`Error fetching last record with status condition ${statusCondition}:`, err);
                 return callback(err);
             }
             if (row) {
@@ -98,7 +98,6 @@ class TransactionRecord {
             }
         });
     }
-
     static getRecordById(t_id, callback) {
         const sql = `SELECT * FROM ${tblname} WHERE t_id = ?`;
         db.get(sql, [t_id], (err, row) => {
@@ -237,11 +236,11 @@ class TransactionRecord {
             callback(null, rows);
         });
     }
-    static getAllRecordByStatus(status, callback) {
-        const sql = `SELECT * FROM ${tblname} WHERE status = ? ORDER BY transaction_date ASC`;
-        db.all(sql, [status], (err, rows) => {
+    static getAllRecordByStatus(statusCondition, callback) {
+        const sql = `SELECT * FROM ${tblname} WHERE status ${statusCondition} ORDER BY transaction_date ASC`;
+        db.all(sql, [], (err, rows) => {
             if (err) {
-                console.error(`Error fetching all records with status ${status}:`, err);
+                console.error(`Error fetching all records with status condition ${statusCondition}:`, err);
                 return callback(err);
             }
             callback(null, rows.map(row => new TransactionRecord(row)));
